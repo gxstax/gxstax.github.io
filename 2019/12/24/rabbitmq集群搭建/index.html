@@ -26,7 +26,7 @@
 <link rel="shortcut icon" href="/images/favicon.png">
 
 
-<title>archives- 2019 - 技术博客</title>
+<title>rabbitmq集群搭建 - 技术博客</title>
 
 <meta name="keywords" content="">
 
@@ -114,8 +114,42 @@
 
             <div class="page-title">
     <ul>
-        <li><a href="/" data-name="Home" title="Back Home">Home</a></li>
-        <li><a href="/tags" data-name="Tag Cloud" title="Tag Cloud">Tags</a></li>
+        <li><a href="/">Recent Posts</a></li>
+        
+            
+                <li class="">
+                    <a href="/categories/java" data-name="java">java</a>
+                </li>
+            
+                <li class="">
+                    <a href="/categories/spring" data-name="spring">spring</a>
+                </li>
+            
+                <li class="">
+                    <a href="/categories/linux" data-name="linux">linux</a>
+                </li>
+            
+                <li class="">
+                    <a href="/categories/database" data-name="数据库">数据库</a>
+                </li>
+            
+                <li class="">
+                    <a href="/categories/thirdparty" data-name="中间件">中间件</a>
+                </li>
+            
+                <li class="">
+                    <a href="/categories/tech-notes" data-name="技术">技术</a>
+                </li>
+            
+                <li class="">
+                    <a href="/categories/humanities" data-name="人文">人文</a>
+                </li>
+            
+                <li class="">
+                    <a href="/categories/others" data-name="其他">其他</a>
+                </li>
+            
+        
         <li class="page-search">
     <form id="search" class="search-form">
         <input type="text"
@@ -131,95 +165,96 @@
 <div class="main-inner">
     <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
         <div class="post-header">
-            <h3 class="post-title">Nice 🥳 8 posts in total. Keep on posting.</h3>
-        </div>
-        
-
-        <div class="post-content markdown-body" itemprop="articleBody">
-            <div class="archives">
-                
-                
-                
-                
-                
-                <div class="archives-item">
-                    <h2>2019年12月</h2>
-                    <ul class="archives_list">
-                        
-                        <li>24日13:41:00
-                            <a href="/2019/12/24/rabbitmq%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/">rabbitmq集群搭建</a>
-                            
-                        </li>
-                        
-                
-                
-                
-                        <li>24日13:36:00
-                            <a href="/2019/12/24/spring%E6%89%A9%E5%B1%95%E7%82%B9%E7%AE%80%E8%BF%B0/">spring扩展点简述</a>
-                            
-                        </li>
-                        
-                
-                
-                
-                        <li>24日13:33:00
-                            <a href="/2019/12/24/%E9%9D%99%E6%80%81%E5%86%85%E9%83%A8%E7%B1%BB%E5%AE%9E%E7%8E%B0%E5%8D%95%E4%BE%8B/">静态内部类实现单例</a>
-                            
-                        </li>
-                        
-                
-                
-                
-                        <li>24日11:14:00
-                            <a href="/2019/12/24/Linux-%E5%91%BD%E4%BB%A4%E6%95%B4%E7%90%86/">Linux 命令整理</a>
-                            
-                        </li>
-                        
-                
-                
-                
-                        <li>24日10:59:00
-                            <a href="/2019/12/24/mysql%E5%87%BD%E6%95%B0%E6%80%BB%E7%BB%93/">mysql函数总结</a>
-                            
-                        </li>
-                        
-                
-                
-                
-                        <li>24日10:47:00
-                            <a href="/2019/12/24/yum%E5%91%BD%E4%BB%A4/">yum命令</a>
-                            
-                        </li>
-                        
-                
-                
-                
-                        <li>23日18:07:05
-                            <a href="/2019/12/23/blog/">blog</a>
-                            
-                        </li>
-                        
-                
-                
-                
-                        <li>23日17:12:00
-                            <a href="/2019/12/23/hello-world/">github博客</a>
-                            
-                        </li>
-                        
-                    </ul>
-                </div>
-                
-                
+            <div class="post-author clearfix">
+                <a class="avatar fleft" href="https://github.com/gxstax"
+                   target="_blank">
+                    <img width="48" src="/images/favicon.png" alt="avatar"/>
+                </a>
+                <p><span class="label">Author</span>
+                    <a href="https://github.com/gxstax"
+                       target="_blank">马以</a>
+                    <span title="Last edited at&nbsp;2019-12-24">2019-12-24</span>
+                </p>
+                <p>敬畏科学</p>
+            </div>
+            <h2 class="post-title">rabbitmq集群搭建</h2>
+            <div class="post-meta">
+                emm... 651 words in the article |
+                you are the&nbsp;<span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>th friend who reading now
             </div>
         </div>
+        <div class="post-content markdown-body">
+            <h3 id="集群搭建"><a href="#集群搭建" class="headerlink" title="集群搭建"></a>集群搭建</h3><ol>
+<li><p>环境准备</p>
+<blockquote>
+<p>虚拟机环境：centos7（这里前提默认已经安装好了rabbitmq）<br><img src="https://img-blog.csdnimg.cn/20190616134328644.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0g0NDM0MTQ2Ng==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>设置每个虚拟机下的rabbitmq环境配置文件.erlang.cookie文件内容相同（rabbitmq以这个内容进行集群同步），<br>.erlang.cookie在/var/lib/rabbitmq/ 下，可能是隐藏的文件，要显示隐藏文件才能看到。</p>
+</blockquote>
+</li>
+<li><p>配置host</p>
+<blockquote>
+<p>使用命令hostnamectl set-hostname rabbitmq1,我这里把3台虚拟机的hostname分别设置为rabbitmq1，rabbitmq2，rabbitmq3,这里注意置完成要重启虚拟机来使其生效；</p>
+<ul>
+<li>然后修改/etc/hosts 文件，如下：</li>
+<li><img src="https://img-blog.csdnimg.cn/2019061613421262.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0g0NDM0MTQ2Ng==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>这里的ip地址要根据你们自己的ip取设置，每个虚拟机设置的相同；</li>
+</ul>
+</blockquote>
+</li>
+<li><p>启动服务</p>
+<blockquote>
+<ul>
+<li>首先用命令把3台rabbitmq的服务启动：service rabbitmq-server start</li>
+<li>然后我们操作rabbitmq2这台服务</li>
+<li>使用命令行停掉应用（不等于停服务）<br><img src="https://img-blog.csdnimg.cn/20190616134641999.png" alt="在这里插入图片描述"></li>
+<li>把我们的rabbitmq2节点加入到rabbitmq1节点中去, ram代表是内存节点<br><img src="https://img-blog.csdnimg.cn/20190616135011692.png" alt="在这里插入图片描述"></li>
+<li>启动应用<br><img src="https://img-blog.csdnimg.cn/20190616135255795.png" alt="在这里插入图片描述"><br>这样我们就可以在管理台看到集群信息<br><img src="https://img-blog.csdnimg.cn/20190616135426379.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0g0NDM0MTQ2Ng==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></li>
+</ul>
+</blockquote>
+</li>
+<li><p>同样的方法我们把rabbitmq3添加进来</p>
+<blockquote>
+<ul>
+<li>方法同rabbitmq2需要注意的就是我们这里在计入集群的时候没有带–ram，而是以磁盘节点，这样主要是为了实现高可用，rabbitmq建议我们至少要有两个磁盘节点信息；</li>
+<li><img src="https://img-blog.csdnimg.cn/20190616135936911.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0g0NDM0MTQ2Ng==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></li>
+</ul>
+</blockquote>
+</li>
+</ol>
+<p>这样我们的一个简单的集群就搭建完毕了；</p>
+
+            
+                
+
+            
+        </div>
+        <div class="post-tool">
+            <a class="btn-thumbs-up" href="javascript:void(0);" data-cid="52" title="95">
+                <i class="fa fa-thumbs-up" aria-hidden="true"></i> Donate
+            </a>
+        </div>
+        
+        <div class="post-tags">Tags：
+            
+            <a href="/tags/thirdparty/">thirdparty</a>
+            
+        </div>
+        
     </article>
+    
+        <p style="text-align: center">This article just represents my own viewpoint. If there is something wrong, please correct me.</p>
+    
+    
+    
+
 </div>
+
+<script src="/js/busuanzi.pure.mini.js"></script>
+
+
 
         </div><!-- end #main-->
     </div><!-- end #body -->
     <footer class="footer">
-    <div class="footer-inner" style="text-align: left">
+    <div class="footer-inner" style="text-align: center">
         <p>
             <a href="/about"  title="About">About</a>&nbsp;&nbsp<em>·</em>&nbsp;&nbsp
             <!-- 自定义链接 -->

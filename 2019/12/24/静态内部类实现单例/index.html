@@ -26,7 +26,7 @@
 <link rel="shortcut icon" href="/images/favicon.png">
 
 
-<title>archives- 2019 - 技术博客</title>
+<title>静态内部类实现单例 - 技术博客</title>
 
 <meta name="keywords" content="">
 
@@ -114,8 +114,42 @@
 
             <div class="page-title">
     <ul>
-        <li><a href="/" data-name="Home" title="Back Home">Home</a></li>
-        <li><a href="/tags" data-name="Tag Cloud" title="Tag Cloud">Tags</a></li>
+        <li><a href="/">Recent Posts</a></li>
+        
+            
+                <li class="active">
+                    <a href="/categories/java" data-name="java">java</a>
+                </li>
+            
+                <li class="">
+                    <a href="/categories/spring" data-name="spring">spring</a>
+                </li>
+            
+                <li class="">
+                    <a href="/categories/linux" data-name="linux">linux</a>
+                </li>
+            
+                <li class="">
+                    <a href="/categories/database" data-name="数据库">数据库</a>
+                </li>
+            
+                <li class="">
+                    <a href="/categories/thirdparty" data-name="中间件">中间件</a>
+                </li>
+            
+                <li class="">
+                    <a href="/categories/tech-notes" data-name="技术">技术</a>
+                </li>
+            
+                <li class="">
+                    <a href="/categories/humanities" data-name="人文">人文</a>
+                </li>
+            
+                <li class="">
+                    <a href="/categories/others" data-name="其他">其他</a>
+                </li>
+            
+        
         <li class="page-search">
     <form id="search" class="search-form">
         <input type="text"
@@ -131,95 +165,63 @@
 <div class="main-inner">
     <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
         <div class="post-header">
-            <h3 class="post-title">Nice 🥳 8 posts in total. Keep on posting.</h3>
-        </div>
-        
-
-        <div class="post-content markdown-body" itemprop="articleBody">
-            <div class="archives">
-                
-                
-                
-                
-                
-                <div class="archives-item">
-                    <h2>2019年12月</h2>
-                    <ul class="archives_list">
-                        
-                        <li>24日13:41:00
-                            <a href="/2019/12/24/rabbitmq%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/">rabbitmq集群搭建</a>
-                            
-                        </li>
-                        
-                
-                
-                
-                        <li>24日13:36:00
-                            <a href="/2019/12/24/spring%E6%89%A9%E5%B1%95%E7%82%B9%E7%AE%80%E8%BF%B0/">spring扩展点简述</a>
-                            
-                        </li>
-                        
-                
-                
-                
-                        <li>24日13:33:00
-                            <a href="/2019/12/24/%E9%9D%99%E6%80%81%E5%86%85%E9%83%A8%E7%B1%BB%E5%AE%9E%E7%8E%B0%E5%8D%95%E4%BE%8B/">静态内部类实现单例</a>
-                            
-                        </li>
-                        
-                
-                
-                
-                        <li>24日11:14:00
-                            <a href="/2019/12/24/Linux-%E5%91%BD%E4%BB%A4%E6%95%B4%E7%90%86/">Linux 命令整理</a>
-                            
-                        </li>
-                        
-                
-                
-                
-                        <li>24日10:59:00
-                            <a href="/2019/12/24/mysql%E5%87%BD%E6%95%B0%E6%80%BB%E7%BB%93/">mysql函数总结</a>
-                            
-                        </li>
-                        
-                
-                
-                
-                        <li>24日10:47:00
-                            <a href="/2019/12/24/yum%E5%91%BD%E4%BB%A4/">yum命令</a>
-                            
-                        </li>
-                        
-                
-                
-                
-                        <li>23日18:07:05
-                            <a href="/2019/12/23/blog/">blog</a>
-                            
-                        </li>
-                        
-                
-                
-                
-                        <li>23日17:12:00
-                            <a href="/2019/12/23/hello-world/">github博客</a>
-                            
-                        </li>
-                        
-                    </ul>
-                </div>
-                
-                
+            <div class="post-author clearfix">
+                <a class="avatar fleft" href="https://github.com/gxstax"
+                   target="_blank">
+                    <img width="48" src="/images/favicon.png" alt="avatar"/>
+                </a>
+                <p><span class="label">Author</span>
+                    <a href="https://github.com/gxstax"
+                       target="_blank">马以</a>
+                    <span title="Last edited at&nbsp;2019-12-24">2019-12-24</span>
+                </p>
+                <p>敬畏科学</p>
+            </div>
+            <h2 class="post-title">静态内部类实现单例</h2>
+            <div class="post-meta">
+                emm... 611 words in the article |
+                you are the&nbsp;<span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>th friend who reading now
             </div>
         </div>
+        <div class="post-content markdown-body">
+            <p>单例模式之 利用静态类实现单例</p>
+<p>利用静态类在jvm内存模型中存储在静态块且只有一个实例的属性，可以轻松实现单例，保证了线程的安全性；</p>
+<p>具体代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">package com.ant.innerclass;</span><br><span class="line"></span><br><span class="line">&#x2F;**</span><br><span class="line"> * @author Ant gxstax@163.com</span><br><span class="line"> * @ClassName: HolderSingleton</span><br><span class="line"> * @Description: 静态内部类实现单例</span><br><span class="line"> * @datetime 2018&#x2F;11&#x2F;23 14:11</span><br><span class="line"> * @Version 1.0</span><br><span class="line"> *&#x2F;</span><br><span class="line">public class HolderSingleton &#123;</span><br><span class="line"></span><br><span class="line">    private HolderSingleton() &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static final class Holder &#123;</span><br><span class="line">        private static final HolderSingleton instance &#x3D; new HolderSingleton();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static HolderSingleton getInstance () &#123;</span><br><span class="line">        return Holder.instance;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+            
+                
+
+            
+        </div>
+        <div class="post-tool">
+            <a class="btn-thumbs-up" href="javascript:void(0);" data-cid="52" title="95">
+                <i class="fa fa-thumbs-up" aria-hidden="true"></i> Donate
+            </a>
+        </div>
+        
+        <div class="post-tags">Tags：
+            
+            <a href="/tags/java/">java</a>
+            
+        </div>
+        
     </article>
+    
+        <p style="text-align: center">This article just represents my own viewpoint. If there is something wrong, please correct me.</p>
+    
+    
+    
+
 </div>
+
+<script src="/js/busuanzi.pure.mini.js"></script>
+
+
 
         </div><!-- end #main-->
     </div><!-- end #body -->
     <footer class="footer">
-    <div class="footer-inner" style="text-align: left">
+    <div class="footer-inner" style="text-align: center">
         <p>
             <a href="/about"  title="About">About</a>&nbsp;&nbsp<em>·</em>&nbsp;&nbsp
             <!-- 自定义链接 -->
