@@ -1,0 +1,419 @@
+<!DOCTYPE HTML>
+<html class="no-js" lang="zh-CN">
+<head>
+    <!--[if lte IE 9]>
+<meta http-equiv="refresh" content="0;url=https://gxstax.github.io/warn.html">
+<![endif]-->
+<meta charset="utf-8">
+<meta name="renderer" content="webkit">
+<meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=no">
+<meta name="author" content="马以">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<meta http-equiv="mobile-agent" content="format=html5; url=https://gxstax.github.io">
+<meta http-equiv="X-DNS-Prefetch-Control" content="on">
+
+<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+
+
+<link rel="shortcut icon" href="/images/favicon.png">
+
+
+<title>缓存数据库数据一致性保证演进过程 - 马以的博客</title>
+
+<meta name="keywords" content="">
+
+<meta name="description " content="java k8s 运维 数据库 jvm">
+
+<!-- Jetpack Open Graph Tags -->
+<meta property="og:type" content="article" />
+<meta property="og:title" content="缓存数据库数据一致性保证演进过程 - 马以的博客" />
+<meta property="og:description" content="java k8s 运维 数据库 jvm" />
+<meta property="og:url" content="https://gxstax.github.io" />
+<meta property="og:site_name" content="马以的博客" />
+
+<link rel="dns-prefetch" href="https://gxstax.github.io">
+<link rel="prefetch" href="https://gxstax.github.io">
+<link rel="prerender" href="https://gxstax.github.io">
+<link rel="stylesheet" href="/css/JSimple.min.css">
+    <script type="text/javascript">
+        (function() {
+            let jsi_config = {
+                rootUrl: 'https://gxstax.github.io/',
+                isPost: 'true',
+                buildingTime: '01/20/2018',
+                snsQRCode: '',
+                donateImg: '/images/donate-qr.png',
+                readMode: 'day',
+                localSearch: { dbPath: '' }
+            };
+            
+                jsi_config.localSearch = {
+                    dbPath: '/search.xml',
+                    trigger: 'auto',
+                    topN: '1',
+                    unescape: 'false'
+                }
+            
+            window.jsi_config = jsi_config;
+        })()
+    </script>
+    
+<script src="/js/SimpleCore.min.js"></script>
+
+<meta name="generator" content="Hexo 6.0.0"></head>
+<body>
+<div id="nav">
+    <nav class="nav-menu">
+        <a class="site-name current" href="/" title="马以">马以</a>
+        <a class="site-index current" href="/"><i class="fa fa-home"></i><span>Home</span></a>
+        <a href="/archives" title="Archives"><i class="fa fa-archives"></i><span>Archives</span></a>
+        <a href="/tags" title="Tags"><i class="fa fa-tags"></i><span>Tags</span></a>
+        <!-- custom single page of menus -->
+        
+        
+        <a href="/help" title="帮助">
+            <i class="fa fa-question-circle"></i>
+            <span>帮助</span>
+        </a>
+        
+    </nav>
+</div>
+
+<div class="nav-user">
+    <a class="btn-search" href="#"><i class="fa fa-search"></i></a>
+    <a class="btn-read-mode" href="#"><i class="fa fa-sun-o"></i></a>
+    
+</div>
+<div id="wrapper" class="clearfix">
+    <div id="body">
+        <div class="main" id="main">
+            <div id="cover">
+    <img class="cover-img" src="https://shuoit.net/images/cover-day.jpg" alt="cover-img" loading="lazy" />
+    <div class="cover-info">
+        
+        <h1 class="cover-siteName">马以</h1>
+        <h3 class="cover-siteTitle">要么庸俗，要么孤独</h3>
+        <p class="cover-siteDesc">代码可以改变世界</p>
+        <div class="cover-sns">
+            
+    &nbsp;&nbsp;<div class="btn btn-telegram">
+        <a href="https://t.me/gxstax" target="_blank" title="telegram" ref="friend">
+            <i class="fa fa-telegram"></i>
+        </a>
+    </div>
+
+    &nbsp;&nbsp;<div class="btn btn-twitter">
+        <a href="https://twitter.com/Ant78261681" target="_blank" title="twitter" ref="friend">
+            <i class="fa fa-twitter"></i>
+        </a>
+    </div>
+
+    &nbsp;&nbsp;<div class="btn btn-github">
+        <a href="https://github.com/gxstax" target="_blank" title="github" ref="friend">
+            <i class="fa fa-github"></i>
+        </a>
+    </div>
+
+    &nbsp;&nbsp;<div class="btn btn-stack-overflow">
+        <a href="https://stackoverflow.com/users/18239130/ant" target="_blank" title="stack-overflow" ref="friend">
+            <i class="fa fa-stack-overflow"></i>
+        </a>
+    </div>
+
+
+        </div>
+    </div>
+</div>
+
+            <div class="page-title">
+    <ul>
+        <li><a href="/">Recent Posts</a></li>
+        
+            
+                <li class="">
+                    <a href="/categories/k8s" data-name="k8s">k8s</a>
+                </li>
+            
+                <li class="">
+                    <a href="/categories/spring" data-name="spring">spring</a>
+                </li>
+            
+                <li class="">
+                    <a href="/categories/java" data-name="java">java</a>
+                </li>
+            
+                <li class="">
+                    <a href="/categories/jvm" data-name="jvm">jvm</a>
+                </li>
+            
+                <li class="">
+                    <a href="/categories/db" data-name="db">db</a>
+                </li>
+            
+                <li class="">
+                    <a href="/categories/middleware" data-name="中间件">中间件</a>
+                </li>
+            
+                <li class="">
+                    <a href="/categories/network" data-name="网络">网络</a>
+                </li>
+            
+                <li class="">
+                    <a href="/categories/linux" data-name="操作系统">操作系统</a>
+                </li>
+            
+                <li class="">
+                    <a href="/categories/hexo" data-name="Hexo博客发布教程">Hexo博客发布教程</a>
+                </li>
+            
+        
+        <li class="page-search">
+    <form id="search" class="search-form">
+        <input type="text"
+               readonly="readonly"
+               id="local-search-input-tip"
+               placeholder="click to search..." />
+        <button type="button" disabled="disabled" class="search-form-submit"><i class="fa fa-search"></i></button>
+    </form>
+</li>
+
+    </ul>
+</div>
+<div class="main-inner">
+    <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+        <div class="post-header">
+            <div class="post-author clearfix">
+                <a class="avatar fleft" href="https://about.gxstax.com"
+                   target="_blank">
+                    <img width="48" src="/images/head_portrait.png" alt="avatar"/>
+                </a>
+                <p><span class="label">Author</span>
+                    <a href="https://about.gxstax.com"
+                       target="_blank">马以</a>
+                    <span title="Last edited at&nbsp;2021-12-23">2021-12-23</span>
+                </p>
+                <p>一个无情的「代码搬运机器」</p>
+            </div>
+            <h2 class="post-title">缓存数据库数据一致性保证演进过程</h2>
+            <div class="post-meta">
+                emm... 3028 words in the article |
+                you are the&nbsp;<span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>th friend who reading now
+            </div>
+        </div>
+        <div class="post-content markdown-body">
+            <h1 id="DTC-解决的业务痛点"><a href="#DTC-解决的业务痛点" class="headerlink" title="DTC 解决的业务痛点"></a>DTC 解决的业务痛点</h1><hr>
+<h2 id="1-缓存数据库一致性问题"><a href="#1-缓存数据库一致性问题" class="headerlink" title="1. 缓存数据库一致性问题"></a>1. 缓存数据库一致性问题</h2><ul>
+<li><h3 id="传统解决方案"><a href="#传统解决方案" class="headerlink" title="传统解决方案"></a>传统解决方案</h3><ol>
+<li><blockquote>
+<p><strong>全量数据刷新缓存</strong> </p>
+<ul>
+<li>数据库的数据,全量刷入缓存（不设置失效时间）。</li>
+<li>写请求只更新数据库，不更新缓存。</li>
+<li>启动一个定时任务，定时把数据库的数据，更新到缓存中。</li>
+</ul>
+</blockquote>
+<p><font color="green" ><b>优点:</b></font> </p>
+<ul>
+<li>读请求可以直接命中缓存，不需查库，所以性能高。</li>
+</ul>
+<p><font color="red" ><b>缺点:</b></font>  </p>
+<ol>
+<li>缓存利用率低: 不经常使用的数据还一直留在缓存中，全量数据，耗费缓存空间;</li>
+<li>数据不一致: 定时刷新缓存，缓存中数据的更新节点完全依赖于定时任务频率和执行效率。</li>
+</ol>
+</li>
+<li><blockquote>
+<p><strong>优化缓存利用率低和一致性</strong> </p>
+<ul>
+<li>写请求只写数据库</li>
+<li>读请求先读缓存，如果缓存不存在，则从数据库读取，并更新缓存。</li>
+<li>同时，写入缓存的数据，都设置失效时间。</li>
+</ul>
+</blockquote>
+<p><font color="green" ><b>优点:</b></font></p>
+<ul>
+<li>缓存中设置了过期时间，这样，缓存中保存的都是热点数据，解决了缓存利用率问题.</li>
+</ul>
+<p> <font color="red" ><b>缺点:</b></font></p>
+<ul>
+<li><p><strong>异常引发数据不一致问题（这里分两种情况讨论）:</strong> </p>
+<p>① <font color="Coral" face="华文彩云"><b>「先更新缓存，后更新数据库」</b></font> </p>
+<p>如果缓存更新成功了，但数据库更新失败，那么此时缓存中是最新值，但数据库是<font color="Maroon">「旧值」</font>。</p>
+<p>虽然此时读请求可以命中缓存，拿到正确的值，但是一旦<font color="Maroon">「缓存失效」</font>。 <br>就会从数据库中读取<font color="Maroon">「旧值」</font>， 这时更新进缓存的也是这个旧值。</p>
+<p>这时，用户就会发现之前修改过的数据，突然又<font color="Maroon">「变回去」</font>了。</p>
+<p>② <font color="Coral" face="华文彩云"><b>「先更新数据库，后更新缓存」</b></font> </p>
+<p>数据库更新成功，写缓存失败，那么数据库是最新值，缓存中是<font color="Maroon">「旧值」</font>。</p>
+<p>这时用户从缓存中读到的全是旧数据，直到<font color="Maroon">「缓存失效」</font>后，读数据库才能读到最新的值。</p>
+<p>这时用户发现，自己修改的值，迟迟不能生效。</p>
+</li>
+<li><p><strong>并发引发数据不一致问题:</strong> </p>
+<p>① <font color="Coral" face="华文彩云"><b> 「先更新缓存，后更新数据库」</b></font></p>
+<p>  接下来我们看，即使数据库和缓存都更新成功，会不会就没什么问题了？</p>
+<p>  假设现在又线程 A 和线程 B 两个线程，需要更新<font color="Maroon">「同一条」</font>数据，时序如下:</p>
+  <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">T1): 线程 A 更新数据库 (X = 1) </span><br><span class="line">T2): 线程 B 更新数据库 (X = 2) </span><br><span class="line">T3): 线程 B 更新缓存 (X = 2) </span><br><span class="line">T4): 线程 A 更新缓存 (X = 1) </span><br></pre></td></tr></table></figure>
+<p>  最后结果：缓存中（X&#x3D;1） 数据库（X&#x3D;2），从而造成数据不一致。</p>
+<p>② <font color="Coral" face="华文彩云"><b>「先更新数据库，后更新缓存」</b></font></p>
+<p>   同 ① ，这里不在详述。</p>
+</li>
+<li><p><strong>缓存利用率低</strong> </p>
+<p>因为该方案是每次数据库发生变更，都会去写缓存，但是缓存中的数据很多都不会被访问到，留在内存中耗费资源。</p>
+</li>
+</ul>
+</li>
+<li><blockquote>
+<p><strong>旁路缓存策略方案</strong>  </p>
+<ul>
+<li>读请求先读缓存，缓存不命中，再读库</li>
+<li>写请求做两个动作：写数据库+删除数据缓存</li>
+</ul>
+</blockquote>
+<p><font color="red" ><b>缺点:</b></font></p>
+<ul>
+<li><p><strong>异常引发数据不一致问题（这里分两种情况讨论）:</strong> </p>
+<p>  这里的场景和 ii.中的异常场景相同，两步中只要有其中一步发生失败，就会引发数据不一致。</p>
+</li>
+<li><p><strong>并发引发数据不一致问题:</strong></p>
+<p>  ① <font color="Coral" face="华文彩云"><b>「先删除缓存，后更新数据库」</b></font> </p>
+<p>  如果有 2 个线程要并发<font color="Maroon">「读写」</font> 数据，可能会发生以下场景:</p>
+  <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">T1): 线程 A 要更新 X = 2 (原值 X = 1)</span><br><span class="line">     </span><br><span class="line">T2): 线程 A 删除缓存</span><br><span class="line">     </span><br><span class="line">T3): 线程 B 读缓存，发现不存在，从数据库中读取到旧值（X = 1）</span><br><span class="line">     </span><br><span class="line">T4): 线程 A 将新值写入数据库 (X = 2)</span><br><span class="line">     </span><br><span class="line">T5): 线程 B 将旧值写入缓存 (X = 1)</span><br><span class="line">     </span><br><span class="line">T6): X 的值在缓存中（X = 1），在数据库中 (X = 2), 发生不一致。</span><br></pre></td></tr></table></figure>
+<p>  可见，先删除缓存，再更新数据库，当发生<font color="Maroon">「读+写」</font> 并发时，存在数据不一致的情况。</p>
+<p>  ② <font color="Coral" face="华文彩云"><b>「先更新数据库，后删除缓存」</b></font></p>
+<p>  依旧是 2 个线程要并发<font color="Maroon">「读写」</font> 数据。</p>
+ <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">T1): 缓存中 X 不存在（数据库 X = 1）</span><br><span class="line"></span><br><span class="line">T2): 线程 A 读取数据库，得到旧值 (X = 1)</span><br><span class="line"></span><br><span class="line">T3): 线程 B 更新数据库（X = 2）</span><br><span class="line"></span><br><span class="line">T4): 线程 B 删除缓存</span><br><span class="line"></span><br><span class="line">T5): 线程 A 将旧值写入缓存 (X = 1)</span><br><span class="line"></span><br><span class="line">T6): X 的值在缓存中（X = 1），在数据库中 (X = 2), 也发生不一致。</span><br></pre></td></tr></table></figure>
+<p>  其实这个方案就是算是<font color="Maroon">「旁路缓存」</font>策略的实现方案；</p>
+<p>  仔细思考以下，这种情况理论来说是可能发生的，但实际上发生的概率是<font color="Maroon">「极低」</font>的。</p>
+<p>  因为它必须满足 3 个条件:</p>
+  <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1-: 缓存刚好失效</span><br><span class="line">       </span><br><span class="line">2-: 读请求 + 写请求并发</span><br><span class="line">       </span><br><span class="line">3-: 更新数据库 + 删除缓存的时间(T3+T4) &gt; 读数据库 + 写缓存时间 (T2 + T5) </span><br></pre></td></tr></table></figure>
+<p>  <font color="SeaGreen"><b>因为写数据库通常有加锁操作，所以写数据库通常要比读数据库的时间要长，所以，条件3发生的概率极低。<br>  这个策略也是我用在<font color="Maroon">「成长值账户」</font>中的缓存策略；</b></font></p>
+  <p>
+  ________________________________________________________________________________________________________________________
+  <font color="Maroon">前面说过异常情况，无论是更新缓存还是删除缓存，只要第二步发生失败，就会导致数据库和缓存不一致。</font> 
+
+<p>  那么这里我们再回过头来讨论下<font color="Maroon">「旁路缓存策略」</font> - <font color="Coral" face="华文彩云"><b>「先更新数据库，后删除缓存」</b></font> 策略异常情况下，我们如何保证第二步执行成功？</p>
+  </p>
+</li>
+<li><p><strong><font color="Maroon">重试</font></strong> </p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">如果更新数据库成功，删除缓存失败，这里我们就可以无脑的在业务代码中，一直尝试删除缓存；</span><br><span class="line">但是这种方案往往存在以下问题：</span><br><span class="line">1-: 失败后立即重试，大概率还会「失败」（网络抖动，或者服务异常）;</span><br><span class="line">2-: 「重试次数」我们要设置多少才是合理值？</span><br><span class="line">3-: 重试会一直「占用」线程资源，无法服务其它请求。</span><br></pre></td></tr></table></figure>
+<p>基于以上结论，我们发现这种<font color="Maroon">「同步重试」</font>方式往往不能解决根本问题。</p>
+</li>
+<li><p><strong><font color="Maroon">异步重试</font></strong> </p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">异步重试步骤：</span><br><span class="line">1-: 更新数据库后，发消息到消息队列。</span><br><span class="line">2-: 消费者消费队列消息。</span><br><span class="line">3-: 删除对应的缓存信息。</span><br></pre></td></tr></table></figure>
+<p>这个方案除了需要维护一个重的「消息队列」服务外，看似好像是无懈可击的方案，但是该方案也有一个致命的漏洞，<br>那就是，数据库主从延迟，基于前面我们讨论的并发情况，写数据库往往是操作主库，查库往往是操作从库，所以，<br>会存在，主库处理玩，然后缓存清理后，从库还是旧数据的情况，那么用户从从库中读取旧数据，更新到缓存中时，还是<br>会出现数据不一致的情况。</p>
+<p>基于以上总总方案，所以我们引入最终的解决方案:</p>
+</li>
+<li><p><strong><font color="Maroon">订阅数据库变更日志，再操作缓存</font></strong> </p>
+<p>引入binlog 监控组件 canal 监控binlog变更日志。</p>
+<p><font color="green" ><b>优点:</b></font></p>
+<ul>
+<li>业务只操作数据，无需考虑缓存以及其它相关业务是失败情况，只要写库成功，就会有binlog，<br>余下的工作旧交由下游业务处理，使得业务更加轻量化和简洁化。</li>
+<li>canal 不作为master的slave，而是作为一个slave的slave，规避主从延迟造成的数据不一致。</li>
+<li>利用binlog 本身的有序性，完全避免并发中的数据不一致问题。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+<h2 id="2-数据变更业务埋点"><a href="#2-数据变更业务埋点" class="headerlink" title="2. 数据变更业务埋点"></a>2. 数据变更业务埋点</h2><ul>
+<li><h3 id="券变更通知用户业务"><a href="#券变更通知用户业务" class="headerlink" title="券变更通知用户业务"></a>券变更通知用户业务</h3><ol>
+<li><blockquote>
+<p><strong>传统做法</strong></p>
+<ul>
+<li>在每一个涉及券变动的业务中设置业务埋点</li>
+<li>动态的更新缓存</li>
+</ul>
+</blockquote>
+</li>
+</ol>
+<p>  <font color="red" ><b>缺点:</b></font></p>
+<ol>
+<li>极大的增加业务代码的复杂度。</li>
+<li>极大的增加业务出错概率。</li>
+<li>缓存不一致问题。</li>
+</ol>
+<p>  <font color="Green" ><b>解决方案: canal + kafka</b></font> </p>
+<ol>
+<li>出错率低</li>
+<li>kafka 持久化，失败重试。</li>
+<li>和业务主流程解耦。</li>
+</ol>
+</li>
+</ul>
+
+            
+                
+            
+        </div>
+        <div class="post-tool">
+            <a class="btn-thumbs-up" href="javascript:void(0);" data-cid="52" title="95">
+                <i class="fa fa-thumbs-up" aria-hidden="true"></i> Donate
+            </a>
+        </div>
+        
+        <div class="post-tags">Tags：
+            
+            <a href="/tags/middleware/">middleware</a>
+            
+        </div>
+        
+    </article>
+    
+        <p style="text-align: center">This article just represents my own viewpoint. If there is something wrong, please correct me.</p>
+    
+    
+    
+    
+
+
+</div>
+
+
+        </div><!-- end #main-->
+    </div><!-- end #body -->
+    <footer class="footer">
+    <div class="footer-inner" style="text-align: center">
+        <p>
+            <a href="/about"  title="About">About</a>&nbsp;&nbsp<em>·</em>&nbsp;&nbsp
+            <!-- 自定义链接 -->
+            <a href="/help" title="Help" >Help</a>&nbsp;&nbsp<em>·</em>&nbsp;&nbsp
+            <a href="/links" title="Links">Links</a>&nbsp;&nbsp<em>·</em>&nbsp;&nbsp
+            <a href="/sitemap.xml" title="SiteMap">SiteMap</a>
+        </p>
+        <p>
+            Has been established&nbsp<a href="/timeline" id="siteBuildingTime"></a>&nbspDays，<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="licence">Based on Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)</a><br/>
+            ©2017-<span id="cpYear"></span> Based on&nbsp<a href="http://hexo.io" target="_blank" rel="nofollow">Hexo</a>
+            ，Theme by&nbsp&nbsp<a href="https://github.com/tangkunyin/hexo-theme-jsimple" target="_blank" rel="bookmark">JSimple</a>
+            ，Author&nbsp<a href="https://about.gxstax.com" target="_blank" rel="friend">马以</a>
+            ，Hosted by <a href="https://pages.github.com/" target="_blank" rel="nofollow">GitHub Pages</a>
+            
+        </p>
+    </div>
+</footer>
+</div>
+<!-- search pop -->
+<div class="popup search-popup local-search-popup">
+    <div class="local-search-header clearfix">
+        <span class="search-icon">
+            <i class="fa fa-search"></i>
+        </span>
+        <span class="popup-btn-close">
+            <i class="fa fa-times-circle"></i>
+        </span>
+        <div class="local-search-input-wrapper">
+            <input id="local-search-input"
+                   spellcheck="false"
+                   type="text"
+                   autocomplete="off"
+                   placeholder="Input query keywords here..."/>
+        </div>
+    </div>
+    <div id="local-search-result"></div>
+</div>
+<div class="fixed-btn">
+    <a class="btn-gotop" href="javascript:"> <i class="fa fa-angle-up"></i></a>
+</div>
+
+
+</body>
+</html>
