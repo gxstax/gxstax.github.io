@@ -1,0 +1,385 @@
+<!DOCTYPE HTML>
+<html class="no-js" lang="zh-CN">
+<head>
+    <!--[if lte IE 9]>
+<meta http-equiv="refresh" content="0;url=https://gxstax.github.io/warn.html">
+<![endif]-->
+<meta charset="utf-8">
+<meta name="renderer" content="webkit">
+<meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=no">
+<meta name="author" content="马以">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<meta http-equiv="mobile-agent" content="format=html5; url=https://gxstax.github.io">
+<meta http-equiv="X-DNS-Prefetch-Control" content="on">
+
+<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+
+
+<link rel="shortcut icon" href="/images/favicon.png">
+
+
+<title>linux命令 - 马以的博客</title>
+
+<meta name="keywords" content="">
+
+<meta name="description " content="java k8s 运维 数据库 jvm">
+
+<!-- Jetpack Open Graph Tags -->
+<meta property="og:type" content="article" />
+<meta property="og:title" content="linux命令 - 马以的博客" />
+<meta property="og:description" content="java k8s 运维 数据库 jvm" />
+<meta property="og:url" content="https://gxstax.github.io" />
+<meta property="og:site_name" content="马以的博客" />
+
+<link rel="dns-prefetch" href="https://gxstax.github.io">
+<link rel="prefetch" href="https://gxstax.github.io">
+<link rel="prerender" href="https://gxstax.github.io">
+<link rel="stylesheet" href="/css/JSimple.min.css">
+    <script type="text/javascript">
+        (function() {
+            let jsi_config = {
+                rootUrl: 'https://gxstax.github.io/',
+                isPost: 'true',
+                buildingTime: '01/20/2018',
+                snsQRCode: '',
+                donateImg: '/images/donate-qr.png',
+                readMode: 'day',
+                localSearch: { dbPath: '' }
+            };
+            
+            window.jsi_config = jsi_config;
+        })()
+    </script>
+    
+<script src="/js/SimpleCore.min.js"></script>
+
+<meta name="generator" content="Hexo 6.0.0"></head>
+<body>
+<div id="nav">
+    <nav class="nav-menu">
+        <a class="site-name current" href="/" title="马以">马以</a>
+        <a class="site-index current" href="/"><i class="fa fa-home"></i><span>Home</span></a>
+        <a href="/archives" title="Archives"><i class="fa fa-archives"></i><span>Archives</span></a>
+        <a href="/tags" title="Tags"><i class="fa fa-tags"></i><span>Tags</span></a>
+        <!-- custom single page of menus -->
+        
+        
+        <a href="/help" title="帮助">
+            <i class="fa fa-question-circle"></i>
+            <span>帮助</span>
+        </a>
+        
+    </nav>
+</div>
+
+<div class="nav-user">
+    <a class="btn-search" href="#"><i class="fa fa-search"></i></a>
+    <a class="btn-read-mode" href="#"><i class="fa fa-sun-o"></i></a>
+    
+</div>
+<div id="wrapper" class="clearfix">
+    <div id="body">
+        <div class="main" id="main">
+            <div id="cover">
+    <img class="cover-img" src="https://shuoit.net/images/cover-day.jpg" alt="cover-img" loading="lazy" />
+    <div class="cover-info">
+        
+        <h1 class="cover-siteName">马以</h1>
+        <h3 class="cover-siteTitle">要么庸俗，要么孤独</h3>
+        <p class="cover-siteDesc">代码可以改变世界</p>
+        <div class="cover-sns">
+            
+    &nbsp;&nbsp;<div class="btn btn-telegram">
+        <a href="https://t.me/gxstax" target="_blank" title="telegram" ref="friend">
+            <i class="fa fa-telegram"></i>
+        </a>
+    </div>
+
+    &nbsp;&nbsp;<div class="btn btn-twitter">
+        <a href="https://twitter.com/Ant78261681" target="_blank" title="twitter" ref="friend">
+            <i class="fa fa-twitter"></i>
+        </a>
+    </div>
+
+    &nbsp;&nbsp;<div class="btn btn-github">
+        <a href="https://github.com/gxstax" target="_blank" title="github" ref="friend">
+            <i class="fa fa-github"></i>
+        </a>
+    </div>
+
+    &nbsp;&nbsp;<div class="btn btn-stack-overflow">
+        <a href="https://stackoverflow.com/users/18239130/ant" target="_blank" title="stack-overflow" ref="friend">
+            <i class="fa fa-stack-overflow"></i>
+        </a>
+    </div>
+
+
+        </div>
+    </div>
+</div>
+
+            <div class="page-title">
+    <ul>
+        <li><a href="/">Recent Posts</a></li>
+        
+            
+                <li class="">
+                    <a href="/categories/k8s" data-name="k8s">k8s</a>
+                </li>
+            
+                <li class="">
+                    <a href="/categories/spring" data-name="spring">spring</a>
+                </li>
+            
+                <li class="">
+                    <a href="/categories/java" data-name="java">java</a>
+                </li>
+            
+                <li class="">
+                    <a href="/categories/jvm" data-name="jvm">jvm</a>
+                </li>
+            
+                <li class="">
+                    <a href="/categories/db" data-name="db">db</a>
+                </li>
+            
+                <li class="">
+                    <a href="/categories/middleware" data-name="中间件">中间件</a>
+                </li>
+            
+                <li class="">
+                    <a href="/categories/network" data-name="网络">网络</a>
+                </li>
+            
+                <li class="">
+                    <a href="/categories/linux" data-name="操作系统">操作系统</a>
+                </li>
+            
+                <li class="">
+                    <a href="/categories/hexo" data-name="Hexo博客发布教程">Hexo博客发布教程</a>
+                </li>
+            
+        
+        <li class="page-search">
+    <form id="search" class="search-form">
+        <input type="text"
+               readonly="readonly"
+               id="local-search-input-tip"
+               placeholder="click to search..." />
+        <button type="button" disabled="disabled" class="search-form-submit"><i class="fa fa-search"></i></button>
+    </form>
+</li>
+
+    </ul>
+</div>
+<div class="main-inner">
+    <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+        <div class="post-header">
+            <div class="post-author clearfix">
+                <a class="avatar fleft" href="https://about.gxstax.com"
+                   target="_blank">
+                    <img width="48" src="/images/head_portrait.png" alt="avatar"/>
+                </a>
+                <p><span class="label">Author</span>
+                    <a href="https://about.gxstax.com"
+                       target="_blank">马以</a>
+                    <span title="Last edited at&nbsp;2019-04-13">2019-04-13</span>
+                </p>
+                <p>一个无情的「代码搬运机器」</p>
+            </div>
+            <h2 class="post-title">linux命令</h2>
+            <div class="post-meta">
+                emm... 2134 words in the article |
+                you are the&nbsp;<span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>th friend who reading now
+            </div>
+        </div>
+        <div class="post-content markdown-body">
+            <h3 id="Linux基本命令"><a href="#Linux基本命令" class="headerlink" title="Linux基本命令"></a>Linux基本命令</h3><ol>
+<li><p>目录示意</p>
+<ul>
+<li>&#x2F;:根目录<br>整个文件系统，有一个顶层目录，称为根。 bin:存放一些可执行的程序、命令。</li>
+<li>boot: 系统启动所需的一些文件。</li>
+<li>dev:系统中的设备(硬件在linux中通过“文件”来标识) etc:存放系统、软件的配置文件</li>
+<li>home:普通用户目录的主目录，以用户名命名。</li>
+<li>home&#x2F;fred lib:系统库目录(32位)</li>
+<li>lib64: 系统库目录(64位)</li>
+<li>media:媒体</li>
+<li>mnt:挂载外部存储设备的文件目录</li>
+<li>opt</li>
+<li>proc</li>
+<li>root:root用户的主目录</li>
+<li>run</li>
+<li>sbin:系统的可执行命令</li>
+<li>srv</li>
+<li>sys</li>
+<li>test</li>
+<li>tmp:系统临时目录 usr:共享资源目录(多个用户可以共享该目录中的程序)</li>
+<li>var</li>
+</ul>
+</li>
+<li><p>命令</p>
+<ul>
+<li><p>ls命令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">ls</span> /: 查看根目录</span><br><span class="line"><span class="built_in">ls</span> -l: 显示详细信息</span><br><span class="line"><span class="built_in">ls</span> -lh: 显示跟符合人类查看方式 </span><br><span class="line"><span class="built_in">ls</span> -a: 显示隐藏文件</span><br></pre></td></tr></table></figure>
+
+
+</li>
+<li><p>目录切换</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">pwd</span>: 查看当前所在目录</span><br><span class="line"><span class="built_in">cd</span>: 切换目录</span><br><span class="line"><span class="built_in">cd</span> ...: 退回到上一级目录<span class="built_in">cat</span></span><br></pre></td></tr></table></figure>
+
+
+</li>
+<li><p>创建文件夹</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> aaa: 相对路径写法</span><br><span class="line"><span class="built_in">mkdir</span> /bbb: 绝对路径写法</span><br><span class="line"><span class="built_in">mkdir</span> -p aaa/bbb/ccc: 级联创建目录</span><br></pre></td></tr></table></figure>
+
+
+</li>
+<li><p>删除目录&#x2F;文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">rm</span>: 删除目录</span><br><span class="line"><span class="built_in">rm</span> -r: 递归删除</span><br><span class="line"><span class="built_in">rm</span> -rf: 递归删除，不提示</span><br></pre></td></tr></table></figure>
+
+
+</li>
+<li><p>查看信息</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">touch</span>: 创建空文件</span><br><span class="line"><span class="built_in">cat</span>: 查看文件内容</span><br></pre></td></tr></table></figure>
+
+
+</li>
+<li><p>编辑</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">vi : 编辑文件</span><br><span class="line">-i: 编辑模式 </span><br><span class="line">-o: 编辑模式(直接到下一行)</span><br><span class="line">-w: 保存</span><br><span class="line">-q: 退出</span><br><span class="line">esc: 退出编辑 </span><br></pre></td></tr></table></figure>
+
+
+</li>
+<li><p>Vim快捷键 (非编辑模式下)</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">a: 在光标后一位开始插入</span><br><span class="line">A: 在该行的最后插入</span><br><span class="line">I: 在该行的最前插入</span><br><span class="line">yy: 复制整行 </span><br><span class="line">3yy: 复制三行</span><br><span class="line">p: 粘贴</span><br><span class="line">gg: 直接跳到文件首行</span><br><span class="line">G: 直接跳到文件的末行</span><br><span class="line"><span class="built_in">dd</span>: 删除一行</span><br><span class="line">3dd: 删除三行</span><br><span class="line">/: 搜索内容,n匹配下一个 u:undo(撤销) ctrl+r:redo(执行之前撤销的) :<span class="built_in">set</span> nu: 设置行号</span><br><span class="line">:<span class="built_in">set</span> nonu: 设置不显示行号</span><br><span class="line">:q!: 强制不保存退出</span><br><span class="line"><span class="built_in">fg</span> 程序编号: 切换后台挂起程序</span><br><span class="line"><span class="built_in">jobs</span>: 查看后台挂起的程序</span><br><span class="line">ctrl+z: 将程序挂起</span><br></pre></td></tr></table></figure>
+
+
+</li>
+<li><p>拷贝</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cp</span> a.txt b.txt: 将a.txt 拷贝为b.txt</span><br></pre></td></tr></table></figure>
+
+
+</li>
+<li><p>移动&#x2F;改名</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mv</span> a.txt aa.txt: 将a.txt 改为 aa.txt</span><br><span class="line"><span class="built_in">mv</span> a.txt aa/aa.txt: 将a.txt 移动到 aa/aa.txt</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>权限</p>
+<ul>
+<li><p>添加用户</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">useradd fred passwd 1234: 添加 fred 用户并设置密码为 1234</span><br></pre></td></tr></table></figure>
+
+
+</li>
+<li><p>linux文件权限的描述格式</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">d rwx rwx rwx</span><br><span class="line">d: 标识节点类型(d:文件夹 -:文件 |:链接)</span><br><span class="line">r: 可读</span><br><span class="line">w: 可写</span><br><span class="line">x: 可执行</span><br><span class="line">第一组rwx: 表示这个文件的拥有者对它的权限</span><br><span class="line">第二组rwx: 表示这个文件的所属组用户对它的权限</span><br><span class="line">第三组rwx: 表示这个文件的其他用户(除以上两种)对它的权限</span><br><span class="line">使用二进制表示权限:例如-rw-rw-r–二进制表示为110,110,100，十进制表示为664</span><br><span class="line"></span><br><span class="line">补充:</span><br><span class="line">r: 对文件来说，是可读取内容;对文件夹来说，是可以<span class="built_in">ls</span></span><br><span class="line">w: 对文件来说，是可修改文件的内容;对文件夹来说，是可以在其中创建或者删除子节点</span><br><span class="line">x: 对文件来说，是能否运行这个文件;对文件夹来说，是能否<span class="built_in">cd</span>进入这个目录</span><br></pre></td></tr></table></figure>
+
+
+</li>
+<li><p>用户管理</p>
+<ul>
+<li><p>增加用户</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">useradd ant: 增加 ant 用户</span><br><span class="line">passwd ant: 给用户ant设置密码</span><br><span class="line">userdel -r 用户名: 删除用户(加一个-r表示把用户及用户的主目录都删除)</span><br><span class="line"><span class="built_in">exit</span>: 退出会话</span><br></pre></td></tr></table></figure>
+
+
+</li>
+<li><p>增加用户组</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">groupadd 组名: 增加组</span><br><span class="line">usermod -g 组名 用户名: 将用户添加到组中</span><br><span class="line">usermod -G 组名1,组名2 用户名: 将用户添加到多个组中</span><br><span class="line">gpasswd -d 用户名 组名: 将用户从组中删除</span><br><span class="line">	—例如:gpasswd -d jack root | gpasswd -d jack sys</span><br></pre></td></tr></table></figure>
+
+
+</li>
+<li><p>查看所属组</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">groups</span>: 查看当前用户所属组 </span><br><span class="line"><span class="built_in">groups</span> jack: 查看指定用户所属组</span><br></pre></td></tr></table></figure>
+
+
+</li>
+<li><p>su 和 sudo</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">su: 身份切换</span><br><span class="line">su username 输入密码(root切换不需要输入密码)</span><br><span class="line">sudo: 让普通用户具备root的权限(需要配置 /etc/sudoers)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>了解完su和sudo，是不是发现sudo有太多的优点了。</p>
+<p>su方式切换是须要输入目标用户的password。而sudo仅仅须要 输入自己的password，所以sudo能够保护目标用户的password不外流的。</p>
+<p>当帮root管理系统的时候，su是直接将 root全部权利交给用户。而sudo能够更好分工，仅仅要配置好&#x2F;etc&#x2F;sudoers，这样sudo能够保护系统更安全，并且分 工明白，有条不紊。</p>
+</blockquote>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+
+            
+                
+            
+        </div>
+        <div class="post-tool">
+            <a class="btn-thumbs-up" href="javascript:void(0);" data-cid="52" title="95">
+                <i class="fa fa-thumbs-up" aria-hidden="true"></i> Donate
+            </a>
+        </div>
+        
+        <div class="post-tags">Tags：
+            
+            <a href="/tags/linux/">linux</a>
+            
+        </div>
+        
+    </article>
+    
+        <p style="text-align: center">This article just represents my own viewpoint. If there is something wrong, please correct me.</p>
+    
+    
+    
+    
+
+
+</div>
+
+
+        </div><!-- end #main-->
+    </div><!-- end #body -->
+    <footer class="footer">
+    <div class="footer-inner" style="text-align: center">
+        <p>
+            <a href="/about"  title="About">About</a>&nbsp;&nbsp<em>·</em>&nbsp;&nbsp
+            <!-- 自定义链接 -->
+            <a href="/help" title="Help" >Help</a>&nbsp;&nbsp<em>·</em>&nbsp;&nbsp
+            <a href="/links" title="Links">Links</a>&nbsp;&nbsp<em>·</em>&nbsp;&nbsp
+            <a href="/sitemap.xml" title="SiteMap">SiteMap</a>
+        </p>
+        <p>
+            Has been established&nbsp<a href="/timeline" id="siteBuildingTime"></a>&nbspDays，<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="licence">Based on Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)</a><br/>
+            ©2017-<span id="cpYear"></span> Based on&nbsp<a href="http://hexo.io" target="_blank" rel="nofollow">Hexo</a>
+            ，Theme by&nbsp&nbsp<a href="https://github.com/tangkunyin/hexo-theme-jsimple" target="_blank" rel="bookmark">JSimple</a>
+            ，Author&nbsp<a href="https://about.gxstax.com" target="_blank" rel="friend">马以</a>
+            ，Hosted by <a href="https://pages.github.com/" target="_blank" rel="nofollow">GitHub Pages</a>
+            
+        </p>
+    </div>
+</footer>
+</div>
+<!-- search pop -->
+<div class="popup search-popup local-search-popup">
+    <div class="local-search-header clearfix">
+        <span class="search-icon">
+            <i class="fa fa-search"></i>
+        </span>
+        <span class="popup-btn-close">
+            <i class="fa fa-times-circle"></i>
+        </span>
+        <div class="local-search-input-wrapper">
+            <input id="local-search-input"
+                   spellcheck="false"
+                   type="text"
+                   autocomplete="off"
+                   placeholder="Input query keywords here..."/>
+        </div>
+    </div>
+    <div id="local-search-result"></div>
+</div>
+<div class="fixed-btn">
+    <a class="btn-gotop" href="javascript:"> <i class="fa fa-angle-up"></i></a>
+</div>
+
+
+</body>
+</html>

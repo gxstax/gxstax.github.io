@@ -1,0 +1,299 @@
+<!DOCTYPE HTML>
+<html class="no-js" lang="zh-CN">
+<head>
+    <!--[if lte IE 9]>
+<meta http-equiv="refresh" content="0;url=https://gxstax.github.io/warn.html">
+<![endif]-->
+<meta charset="utf-8">
+<meta name="renderer" content="webkit">
+<meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=no">
+<meta name="author" content="马以">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<meta http-equiv="mobile-agent" content="format=html5; url=https://gxstax.github.io">
+<meta http-equiv="X-DNS-Prefetch-Control" content="on">
+
+<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+
+
+<link rel="shortcut icon" href="/images/favicon.png">
+
+
+<title>k8s命令 - 马以的博客</title>
+
+<meta name="keywords" content="">
+
+<meta name="description " content="java k8s 运维 数据库 jvm">
+
+<!-- Jetpack Open Graph Tags -->
+<meta property="og:type" content="article" />
+<meta property="og:title" content="k8s命令 - 马以的博客" />
+<meta property="og:description" content="java k8s 运维 数据库 jvm" />
+<meta property="og:url" content="https://gxstax.github.io" />
+<meta property="og:site_name" content="马以的博客" />
+
+<link rel="dns-prefetch" href="https://gxstax.github.io">
+<link rel="prefetch" href="https://gxstax.github.io">
+<link rel="prerender" href="https://gxstax.github.io">
+<link rel="stylesheet" href="/css/JSimple.min.css">
+    <script type="text/javascript">
+        (function() {
+            let jsi_config = {
+                rootUrl: 'https://gxstax.github.io/',
+                isPost: 'true',
+                buildingTime: '01/20/2018',
+                snsQRCode: '',
+                donateImg: '/images/donate-qr.png',
+                readMode: 'day',
+                localSearch: { dbPath: '' }
+            };
+            
+            window.jsi_config = jsi_config;
+        })()
+    </script>
+    
+<script src="/js/SimpleCore.min.js"></script>
+
+<meta name="generator" content="Hexo 6.0.0"></head>
+<body>
+<div id="nav">
+    <nav class="nav-menu">
+        <a class="site-name current" href="/" title="马以">马以</a>
+        <a class="site-index current" href="/"><i class="fa fa-home"></i><span>Home</span></a>
+        <a href="/archives" title="Archives"><i class="fa fa-archives"></i><span>Archives</span></a>
+        <a href="/tags" title="Tags"><i class="fa fa-tags"></i><span>Tags</span></a>
+        <!-- custom single page of menus -->
+        
+        
+        <a href="/help" title="帮助">
+            <i class="fa fa-question-circle"></i>
+            <span>帮助</span>
+        </a>
+        
+    </nav>
+</div>
+
+<div class="nav-user">
+    <a class="btn-search" href="#"><i class="fa fa-search"></i></a>
+    <a class="btn-read-mode" href="#"><i class="fa fa-sun-o"></i></a>
+    
+</div>
+<div id="wrapper" class="clearfix">
+    <div id="body">
+        <div class="main" id="main">
+            <div id="cover">
+    <img class="cover-img" src="https://shuoit.net/images/cover-day.jpg" alt="cover-img" loading="lazy" />
+    <div class="cover-info">
+        
+        <h1 class="cover-siteName">马以</h1>
+        <h3 class="cover-siteTitle">要么庸俗，要么孤独</h3>
+        <p class="cover-siteDesc">代码可以改变世界</p>
+        <div class="cover-sns">
+            
+    &nbsp;&nbsp;<div class="btn btn-telegram">
+        <a href="https://t.me/gxstax" target="_blank" title="telegram" ref="friend">
+            <i class="fa fa-telegram"></i>
+        </a>
+    </div>
+
+    &nbsp;&nbsp;<div class="btn btn-twitter">
+        <a href="https://twitter.com/Ant78261681" target="_blank" title="twitter" ref="friend">
+            <i class="fa fa-twitter"></i>
+        </a>
+    </div>
+
+    &nbsp;&nbsp;<div class="btn btn-github">
+        <a href="https://github.com/gxstax" target="_blank" title="github" ref="friend">
+            <i class="fa fa-github"></i>
+        </a>
+    </div>
+
+    &nbsp;&nbsp;<div class="btn btn-stack-overflow">
+        <a href="https://stackoverflow.com/users/18239130/ant" target="_blank" title="stack-overflow" ref="friend">
+            <i class="fa fa-stack-overflow"></i>
+        </a>
+    </div>
+
+
+        </div>
+    </div>
+</div>
+
+            <div class="page-title">
+    <ul>
+        <li><a href="/">Recent Posts</a></li>
+        
+            
+                <li class="active">
+                    <a href="/categories/k8s" data-name="k8s">k8s</a>
+                </li>
+            
+                <li class="">
+                    <a href="/categories/spring" data-name="spring">spring</a>
+                </li>
+            
+                <li class="">
+                    <a href="/categories/java" data-name="java">java</a>
+                </li>
+            
+                <li class="">
+                    <a href="/categories/jvm" data-name="jvm">jvm</a>
+                </li>
+            
+                <li class="">
+                    <a href="/categories/db" data-name="db">db</a>
+                </li>
+            
+                <li class="">
+                    <a href="/categories/middleware" data-name="中间件">中间件</a>
+                </li>
+            
+                <li class="">
+                    <a href="/categories/network" data-name="网络">网络</a>
+                </li>
+            
+                <li class="">
+                    <a href="/categories/linux" data-name="操作系统">操作系统</a>
+                </li>
+            
+                <li class="">
+                    <a href="/categories/hexo" data-name="Hexo博客发布教程">Hexo博客发布教程</a>
+                </li>
+            
+        
+        <li class="page-search">
+    <form id="search" class="search-form">
+        <input type="text"
+               readonly="readonly"
+               id="local-search-input-tip"
+               placeholder="click to search..." />
+        <button type="button" disabled="disabled" class="search-form-submit"><i class="fa fa-search"></i></button>
+    </form>
+</li>
+
+    </ul>
+</div>
+<div class="main-inner">
+    <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+        <div class="post-header">
+            <div class="post-author clearfix">
+                <a class="avatar fleft" href="https://about.gxstax.com"
+                   target="_blank">
+                    <img width="48" src="/images/head_portrait.png" alt="avatar"/>
+                </a>
+                <p><span class="label">Author</span>
+                    <a href="https://about.gxstax.com"
+                       target="_blank">马以</a>
+                    <span title="Last edited at&nbsp;2022-02-22">2022-02-22</span>
+                </p>
+                <p>一个无情的「代码搬运机器」</p>
+            </div>
+            <h2 class="post-title">k8s命令</h2>
+            <div class="post-meta">
+                emm... 1610 words in the article |
+                you are the&nbsp;<span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>th friend who reading now
+            </div>
+        </div>
+        <div class="post-content markdown-body">
+            <hr>
+<h2 id="1-master节点"><a href="#1-master节点" class="headerlink" title="1. master节点"></a>1. master节点</h2><ol>
+<li><p><strong>查看node节点加入命令</strong> </p>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt; kubeadm token create --print-join-command</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>查看创建节点日志</strong>  </p>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; kubectl describe pods -l app=$&#123;pod_name&#125;</span><br><span class="line">      </span><br><span class="line">&gt; kubectl describe pod $&#123;pod_name&#125; -n $&#123;name_space&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p><strong>重启k8s集群</strong></p>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">      master节点执行：</span><br><span class="line">      &gt; kubectl drain k8s-node1 --delete-local-data --force --ignore-daemonsets</span><br><span class="line">      &gt; kubectl delete node k8s-node1</span><br><span class="line">      在相应node节点执行：</span><br><span class="line">      &gt; kubeadm reset</span><br><span class="line">      &gt; rm -rf /var/lib/cni/ $HOME/.kube/config /etc/cni/net.d</span><br><span class="line">  </span><br><span class="line">      master节点执行：</span><br><span class="line">&gt; kubectl drain k8s-node2 --delete-local-data --force --ignore-daemonsets</span><br><span class="line">&gt; kubectl delete node k8s-node2</span><br><span class="line">在相应node节点执行:</span><br><span class="line">&gt; kubeadm reset</span><br><span class="line">      &gt; rm -rf /var/lib/cni/ $HOME/.kube/config /etc/cni/net.d</span><br><span class="line">      </span><br><span class="line">      删除master节点：</span><br><span class="line">&gt; kubectl drain k8s-master --delete-local-data --force --ignore-daemonsets</span><br><span class="line">&gt; kubectl delete node k8s-master</span><br><span class="line">&gt; kubeadm reset</span><br><span class="line">   &gt; rm -rf /var/lib/cni/ $HOME/.kube/config /etc/cni/net.d</span><br></pre></td></tr></table></figure></li>
+<li><p><strong>实时查看 Deployment 对象的状态变化</strong></p>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt; kubectl rollout status deployment/$&#123;deployment_name&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p><strong>修改镜像信息信息</strong></p>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt; kubectl set image deployment/nginx-deployment nginx=nginx:1.91</span><br></pre></td></tr></table></figure></li>
+<li><p><strong>回滚上一版本</strong></p>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt; kubectl rollout undo deployment/nginx-deployment</span><br></pre></td></tr></table></figure></li>
+<li><p><strong>查看Deployment 变更对应的版本</strong></p>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt; kubectl rollout history deployment/nginx-deployment</span><br></pre></td></tr></table></figure></li>
+<li><p><strong>回滚到执行版本</strong></p>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt; kubectl rollout undo deployment/nginx-deployment --to-revision=2</span><br></pre></td></tr></table></figure></li>
+<li><p><strong>暂停滚动更新</strong></p>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt; kubectl rollout pause deployment/nginx-deployment</span><br></pre></td></tr></table></figure>
+<p>  <font color=orange>因为我们每修改一次deployment，都会生成一个新的ReplicaSet对象，这样显得有些多余和浪费资源，所以，当我们需要修改deployment的时候，先暂时暂停滚动更新，等到我们一次性修改完成后，再重新恢复即可。</font></p>
+</li>
+<li><p><strong>恢复滚动更新</strong></p>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt; kubectl rollout resume deployment/nginx-deployment</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="2-node节点"><a href="#2-node节点" class="headerlink" title="2. node节点"></a>2. node节点</h2>
+            
+                
+            
+        </div>
+        <div class="post-tool">
+            <a class="btn-thumbs-up" href="javascript:void(0);" data-cid="52" title="95">
+                <i class="fa fa-thumbs-up" aria-hidden="true"></i> Donate
+            </a>
+        </div>
+        
+        <div class="post-tags">Tags：
+            
+            <a href="/tags/k8s/">k8s</a>
+            
+        </div>
+        
+    </article>
+    
+        <p style="text-align: center">This article just represents my own viewpoint. If there is something wrong, please correct me.</p>
+    
+    
+    
+    
+
+
+</div>
+
+
+        </div><!-- end #main-->
+    </div><!-- end #body -->
+    <footer class="footer">
+    <div class="footer-inner" style="text-align: center">
+        <p>
+            <a href="/about"  title="About">About</a>&nbsp;&nbsp<em>·</em>&nbsp;&nbsp
+            <!-- 自定义链接 -->
+            <a href="/help" title="Help" >Help</a>&nbsp;&nbsp<em>·</em>&nbsp;&nbsp
+            <a href="/links" title="Links">Links</a>&nbsp;&nbsp<em>·</em>&nbsp;&nbsp
+            <a href="/sitemap.xml" title="SiteMap">SiteMap</a>
+        </p>
+        <p>
+            Has been established&nbsp<a href="/timeline" id="siteBuildingTime"></a>&nbspDays，<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="licence">Based on Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)</a><br/>
+            ©2017-<span id="cpYear"></span> Based on&nbsp<a href="http://hexo.io" target="_blank" rel="nofollow">Hexo</a>
+            ，Theme by&nbsp&nbsp<a href="https://github.com/tangkunyin/hexo-theme-jsimple" target="_blank" rel="bookmark">JSimple</a>
+            ，Author&nbsp<a href="https://about.gxstax.com" target="_blank" rel="friend">马以</a>
+            ，Hosted by <a href="https://pages.github.com/" target="_blank" rel="nofollow">GitHub Pages</a>
+            
+        </p>
+    </div>
+</footer>
+</div>
+<!-- search pop -->
+<div class="popup search-popup local-search-popup">
+    <div class="local-search-header clearfix">
+        <span class="search-icon">
+            <i class="fa fa-search"></i>
+        </span>
+        <span class="popup-btn-close">
+            <i class="fa fa-times-circle"></i>
+        </span>
+        <div class="local-search-input-wrapper">
+            <input id="local-search-input"
+                   spellcheck="false"
+                   type="text"
+                   autocomplete="off"
+                   placeholder="Input query keywords here..."/>
+        </div>
+    </div>
+    <div id="local-search-result"></div>
+</div>
+<div class="fixed-btn">
+    <a class="btn-gotop" href="javascript:"> <i class="fa fa-angle-up"></i></a>
+</div>
+
+
+</body>
+</html>
