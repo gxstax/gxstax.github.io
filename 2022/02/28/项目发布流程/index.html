@@ -4,15 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, maximum-scale=5, viewport-fit=cover">
     <title>项目发布流程 | 马以的博客</title>
-    <meta name="description" content="新增 categories 分类页面1$ hexo new page k8s   配置 打开 blog&#x2F;source&#x2F;k8s&#x2F;index.md，默认是下列内容： 1234---title: 分类date: 2018-10-22 14:25:08---  修改为：  1234567891011  ---  title: 分类  date: 2018-10-22 14:25:08  type: &amp;qu">
+    <meta name="description" content="博客发布流程新增 categories 分类页面1$ hexo new page k8s   配置 打开 blog&#x2F;source&#x2F;k8s&#x2F;index.md，默认是下列内容： 1234---title: 分类date: 2018-10-22 14:25:08---  修改为：  1234567891011  ---  title: 分类  date: 2018-10-22 14:25:08  typ">
 <meta property="og:type" content="article">
 <meta property="og:title" content="项目发布流程">
 <meta property="og:url" content="https://gxstax.github.io/2022/02/28/%E9%A1%B9%E7%9B%AE%E5%8F%91%E5%B8%83%E6%B5%81%E7%A8%8B/index.html">
 <meta property="og:site_name" content="马以的博客">
-<meta property="og:description" content="新增 categories 分类页面1$ hexo new page k8s   配置 打开 blog&#x2F;source&#x2F;k8s&#x2F;index.md，默认是下列内容： 1234---title: 分类date: 2018-10-22 14:25:08---  修改为：  1234567891011  ---  title: 分类  date: 2018-10-22 14:25:08  type: &amp;qu">
+<meta property="og:description" content="博客发布流程新增 categories 分类页面1$ hexo new page k8s   配置 打开 blog&#x2F;source&#x2F;k8s&#x2F;index.md，默认是下列内容： 1234---title: 分类date: 2018-10-22 14:25:08---  修改为：  1234567891011  ---  title: 分类  date: 2018-10-22 14:25:08  typ">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-02-28T02:24:25.000Z">
-<meta property="article:modified_time" content="2022-02-28T02:37:30.605Z">
+<meta property="article:modified_time" content="2022-02-28T06:17:44.567Z">
 <meta property="article:author" content="马以">
 <meta name="twitter:card" content="summary">
 
@@ -224,17 +224,17 @@
                 </span>
                 
     
-        <span class="post-wordcount" itemprop="wordCount">字数统计: 198(字)</span>
+        <span class="post-wordcount" itemprop="wordCount">字数统计: 832(字)</span>
     
     
-        <span class="post-readcount" itemprop="timeRequired">阅读时长: 1(分)</span>
+        <span class="post-readcount" itemprop="timeRequired">阅读时长: 3(分)</span>
     
 
 
             </p>
         </header>
         <div class="marked-body article-body">
-            <h3 id="新增-categories-分类页面"><a href="#新增-categories-分类页面" class="headerlink" title="新增 categories 分类页面"></a>新增 categories 分类页面</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new page k8s</span><br></pre></td></tr></table></figure>
+            <h2 id="博客发布流程"><a href="#博客发布流程" class="headerlink" title="博客发布流程"></a>博客发布流程</h2><h3 id="新增-categories-分类页面"><a href="#新增-categories-分类页面" class="headerlink" title="新增 categories 分类页面"></a>新增 categories 分类页面</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new page k8s</span><br></pre></td></tr></table></figure>
 
 <ul>
 <li><p>配置</p>
@@ -250,6 +250,102 @@
 <figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">title: k8s集群搭建</span><br><span class="line">comments: true</span><br><span class="line">date: 2018-10-22 23:03:42</span><br><span class="line">updated: 2019-10-22 23:03:42</span><br><span class="line">desc: 云服务器k8s集群搭建</span><br><span class="line">categories:</span><br><span class="line"><span class="bullet">    -</span> k8s</span><br><span class="line">tags: [k8s]</span><br><span class="line"><span class="section">keywords: k8s, cloudnative</span></span><br><span class="line"><span class="section">---</span></span><br><span class="line"><span class="section">## k8s 集群搭建</span></span><br><span class="line">具体的文章内容..........</span><br></pre></td></tr></table></figure></li>
 <li><p>重启服务</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 如果修改了 _config.theme.yml 注意执行 npm run build</span></span><br><span class="line">$ npm run build</span><br><span class="line">$ npm run server</span><br><span class="line"></span><br><span class="line"><span class="comment"># 如果未修改过，执行下面命令</span></span><br><span class="line">$ hexo g &amp;&amp; hexo s</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="友链"><a href="#友链" class="headerlink" title="友链"></a>友链</h3><p>友链与主题分离，数据存放在<a target="_blank" rel="noopener" href="https://hexo.io/docs/data-files">数据文件夹</a>的<code>links.yml</code>中<br>例子：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># links</span></span><br><span class="line"><span class="string">马以:</span></span><br><span class="line">  <span class="attr">link:</span> <span class="string">https://www.ant.top</span></span><br><span class="line">  <span class="attr">avatar:</span> <span class="string">https://www.ant.top/images/avatar.jpg</span></span><br><span class="line">  <span class="attr">desc:</span> <span class="string">马以</span></span><br><span class="line"></span><br><span class="line"><span class="attr">Ant:</span></span><br><span class="line">  <span class="attr">link:</span> <span class="string">https://www.ant.top</span></span><br><span class="line">  <span class="attr">avatar:</span> <span class="string">https://www.ant.top/images/avatar.jpg</span></span><br><span class="line">  <span class="attr">desc:</span> <span class="string">Ant</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="本地搜索"><a href="#本地搜索" class="headerlink" title="本地搜索"></a>本地搜索</h3><p>需要安装<code>hexo-generator-json-content</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm i -S hexo-generator-json-content</span><br></pre></td></tr></table></figure>
+
+
+
+
+<h3 id="主题配置"><a href="#主题配置" class="headerlink" title="主题配置"></a>主题配置</h3><ul>
+<li><p><strong>menu</strong></p>
+<p>是否显示左侧 header 中的菜单，如果不需要可以注释掉。</p>
+</li>
+<li><p><strong>menu_icons</strong></p>
+<p><code>enable</code>左侧菜单是否显示图标，如不需要可以设置成<code>false</code><br>其他配置项的值为<code>iconfont</code>的<code>class</code>。一般不需要更改，如果你需要新增图标可以提 <a target="_blank" rel="noopener" href="https://github.com/fengkx/hexo-theme-purer/issues">Issue</a> 或者更改图标可以更改主题的<code>src/css/iconfont.css</code>。图标来自阿里的 <a target="_blank" rel="noopener" href="https://iconfont.cn/">iconfont.cn</a>。</p>
+</li>
+<li><p><strong>site</strong></p>
+<p><strong>favicon</strong></p>
+<p>站点 favicon，相对<code>source</code>或主题根目录下的<code>source</code><br>例如<code>/images.fvicon.ico</code>相当于在<code>source/images/favicon.ico</code>中找。</p>
+<p><strong>site_verfication</strong></p>
+<p>Google 或 Baidu 提供的 HTML meta 验证。形如</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;google-site-verification&quot;</span> <span class="attr">content</span>=<span class="string">&quot;your verification string&quot;</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>将 content 里的内容粘贴到对应的属性中。</p>
+<p><strong>google_analytics</strong></p>
+<p>在 Google Analytics 找到跟踪 ID(一般是以 UA- 开头)填入。留空不启用。</p>
+</li>
+<li><p><strong>pagination</strong></p>
+<p>prev， next 是否总是显示，默认为 <code>true</code>。仅当多于一页时有效。</p>
+</li>
+<li><p><strong>comment</strong></p>
+<p><strong>type</strong></p>
+<p>选择启用哪一种评论系统。留空则不启用。<br>你可以通过<code>front-matter</code>的<code>comment: boolean</code>控制具体一篇 post 是否开启评论。默认开启。</p>
+</li>
+<li><p><strong>github</strong></p>
+<p><strong>username</strong></p>
+<p>GitHub username</p>
+</li>
+<li><p><strong>postCount</strong></p>
+<p><strong>enable</strong></p>
+<p>是否启用。需要安装相关的插件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm i --save hexo-wordcount</span><br></pre></td></tr></table></figure>
+
+<p><strong>wordocunt</strong></p>
+<p>是否显示文章字数统计</p>
+<p><strong>min2read</strong></p>
+<p>是否显示阅读时长预计</p>
+</li>
+<li><p><strong>toc</strong></p>
+<p>TOC 全局开关<br>你可以通过<code>front-matter</code>的<code>toc: boolean</code>控制是否具体一篇 post 是否开启 toc。默认开启。</p>
+</li>
+<li><p><strong>fancybox</strong></p>
+<p>是否开启基于<a target="_blank" rel="noopener" href="https://sachinchoolur.github.io/lightgallery.js/">LightGallery</a>图片 FancyBox 效果。默认开启。</p>
+</li>
+<li><p><strong>license</strong></p>
+<p>Copyright 显示的 HTML 片段。注释掉则不显示Copyright</p>
+</li>
+<li><p><strong>footer</strong></p>
+<p><strong>custom</strong></p>
+<p>自定义 Footer 的 HTML 片段。注释掉则不显示。</p>
+<p>具体例子可参考 <a target="_blank" rel="noopener" href="https://purer.netlify.com/">Demo</a><br>Demo 源文件 <a target="_blank" rel="noopener" href="https://github.com/fengkx/purer-theme-demo">Source</a></p>
+</li>
+<li><p><strong>profile</strong></p>
+<p><strong>enable</strong></p>
+<p>是否显示 profile<br>效果可以参考 <a target="_blank" rel="noopener" href="https://purer.netlify.com/">Demo</a><br>Demo 源文件 <a target="_blank" rel="noopener" href="https://github.com/fengkx/purer-theme-demo">Source</a></p>
+<p><strong>social</strong></p>
+<ul>
+<li><p><strong>links</strong></p>
+<p>Footer 显示的社交联系图标和链接。如需要添加图标可以提 <a target="_blank" rel="noopener" href="https://github.com/fengkx/hexo-theme-purer/issues">Issue</a></p>
+</li>
+</ul>
+</li>
+<li><p><strong>links</strong></p>
+<p>About 页面侧栏显示的链接</p>
+</li>
+<li><p><strong>labels</strong></p>
+<p>About 页面侧栏显示的 Labels</p>
+</li>
+<li><p><strong>skills</strong></p>
+<p>About 页面侧栏显示的 Skills</p>
+</li>
+<li><p><strong>works</strong></p>
+<p>About 页面侧栏显示的个人项目</p>
+</li>
+<li><p><strong>widgets</strong></p>
+<p>侧栏显示的 widget， 注释则关闭。</p>
+</li>
+<li><p><strong>show_count</strong></p>
+<p>侧栏的 tag， archive，category widget 中是否显示文章数量</p>
+</li>
+<li><p><strong>cdn</strong></p>
+<p>用到的 CDN 地址，如果你不知道是什么就不要改动。</p>
+</li>
 </ul>
 
         </div>
@@ -276,7 +372,7 @@
     <div class="toc-sidebar">
         <nav id="toc" class="article-toc">
             <h3 class="toc-title">文章目录</h3>
-            <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%B0%E5%A2%9E-categories-%E5%88%86%E7%B1%BB%E9%A1%B5%E9%9D%A2"><span class="toc-number">1.</span> <span class="toc-text">新增 categories 分类页面</span></a></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%9A%E5%AE%A2%E5%8F%91%E5%B8%83%E6%B5%81%E7%A8%8B"><span class="toc-number">1.</span> <span class="toc-text">博客发布流程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%B0%E5%A2%9E-categories-%E5%88%86%E7%B1%BB%E9%A1%B5%E9%9D%A2"><span class="toc-number">1.1.</span> <span class="toc-text">新增 categories 分类页面</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%8B%E9%93%BE"><span class="toc-number">1.2.</span> <span class="toc-text">友链</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%AC%E5%9C%B0%E6%90%9C%E7%B4%A2"><span class="toc-number">1.3.</span> <span class="toc-text">本地搜索</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BB%E9%A2%98%E9%85%8D%E7%BD%AE"><span class="toc-number">1.4.</span> <span class="toc-text">主题配置</span></a></li></ol></li></ol>
         </nav>
     </div>
 </aside>
