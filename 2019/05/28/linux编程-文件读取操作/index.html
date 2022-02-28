@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html  lang="zh-CN" >
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, maximum-scale=5, viewport-fit=cover">
+    <title>linux编程-文件读取操作 | 马以的博客</title>
+    <meta name="description" content="这里写一个最简单的文件读取的操作流程： 安装环境 我的系统是centos7，默认是不带有linux函数系统手册的，所以有需要的要先安装一下。具体的命令如下： 1$ yum -y install man-pages  出现如下提示，说明安装成功； 1234$ Running transaction 正在安装 : man-pages-3.53-5.el7.noarch$ 1&#x2F;1 验证中 : man-p">
+<meta property="og:type" content="article">
+<meta property="og:title" content="linux编程-文件读取操作">
+<meta property="og:url" content="https://gxstax.github.io/2019/05/28/linux%E7%BC%96%E7%A8%8B-%E6%96%87%E4%BB%B6%E8%AF%BB%E5%8F%96%E6%93%8D%E4%BD%9C/index.html">
+<meta property="og:site_name" content="马以的博客">
+<meta property="og:description" content="这里写一个最简单的文件读取的操作流程： 安装环境 我的系统是centos7，默认是不带有linux函数系统手册的，所以有需要的要先安装一下。具体的命令如下： 1$ yum -y install man-pages  出现如下提示，说明安装成功； 1234$ Running transaction 正在安装 : man-pages-3.53-5.el7.noarch$ 1&#x2F;1 验证中 : man-p">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-05-28T02:21:56.000Z">
+<meta property="article:modified_time" content="2022-02-27T11:30:00.838Z">
+<meta property="article:author" content="马以">
+<meta property="article:tag" content="linuxProgram">
+<meta name="twitter:card" content="summary">
+
+    
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
+
+    
+<link rel="stylesheet" href="/css/common.min.css">
+
+
+
+    
+    
+    
+    
+        <link href="//cdn.jsdelivr.net/npm/lightgallery.js@1.1.3/dist/css/lightgallery.min.css" rel="stylesheet">
+    
+    
+    
+<link rel="stylesheet" href="/css/iconfont.min.css">
+
+    
+<meta name="generator" content="Hexo 5.4.1"></head>
+
+    <body>
+        <header class="header header-fixture">
+    <div class="profile-search-wrap flex sm:block">
+        
+        
+        <div class="profile sm:text-center md:px-1 lg:px-3 sm:pb-4 sm:pt-6">
+            <a id="avatar" role="link" href="https://github.com/gxstax" class="inline-block lg:w-16 lg:h-16 w-8 h-8 m-2" target="_blank" rel="noopener" rel="noreferrer" >
+                <img src="https://www.gravatar.com/avatar/c41cd3c9e162f67fe7333c672cffeafd?s=128" class="rounded-full" alt="avatar">
+            </a>
+            <h2 id="name" class="hidden lg:block">Ant</h2>
+            <h3 id="title" class="hidden xl:block">笔耕不辍，钟情翰墨</h3>
+            
+            <small id="location" class="hidden lg:block">
+                <i class="iconfont icon-map-icon"></i>
+                ShenZhen, GuangDong
+            </small>
+            
+        </div>
+        
+        
+<div class="search flex-1 flex lg:inline-block sm:hidden lg:px-4 lg:mt-2 lg:mb-4 lg:w-full">
+    <form id="search-form" class="my-auto flex-1 lg:border lg:border-solid lg:border-gray-200">
+        <div class="input-group table bg-gray-100 lg:bg-white w-full">
+            <input id="search-input" type="text" placeholder="搜索" class="inline-block w-full bg-gray-100 lg:bg-white">
+            <span class="table-cell">
+                <button name="search tigger button" disabled>
+                    <i class="iconfont icon-search m-2"></i>
+                </button>
+            </span>
+        </div>
+    </form>
+        
+<div id="content-json" data-placeholder="搜索" class="invisible hidden">/content.json</div>
+<script id="search-teamplate" type="text/html" data-path="/content.json">
+    <div>
+        <div class="search-header bg-gray-400">
+            <input id="actual-search-input" model="keyword" ref="input" class="inline-block w-full h-10 px-2 py-1" placeholder="搜索" type="text">
+        </div>
+        <div class="search-result bg-gray-200">
+            {{#each searchPosts}}
+            <a href="/{{ path }}" class="result-item block px-2 pb-3 mb-1 pt-1 hover:bg-indigo-100">
+                <i class="iconfont icon-file"></i>
+                <h1 class="result-title inline font-medium text-lg">{{ title }}</h1>
+                <p class="result-content text-gray-600 text-sm">{{{ text }}}</p>
+            </a>
+            {{/each}}
+        </div>
+    </div>
+</script>
+
+</div>
+
+
+        <button name="menu toogle button" id="menu-toggle-btn" class="block sm:hidden p-3" role="button" aria-expanded="false">
+            <i class="iconfont icon-hamburger"></i>
+        </button>
+    </div>
+    <nav id="menu-nav" class="hidden sm:flex flex-col">
+        
+        
+            <div class="menu-item menu-home" role="menuitem">
+                <a href="/.">
+                    <i class="iconfont icon-home" aria-hidden="true"></i>
+                    <span class="menu-title">首页</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-archives" role="menuitem">
+                <a href="/archives">
+                    <i class="iconfont icon-archive" aria-hidden="true"></i>
+                    <span class="menu-title">归档</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-categories" role="menuitem">
+                <a href="/categories">
+                    <i class="iconfont icon-folder" aria-hidden="true"></i>
+                    <span class="menu-title">分类</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-tags" role="menuitem">
+                <a href="/tags">
+                    <i class="iconfont icon-tag" aria-hidden="true"></i>
+                    <span class="menu-title">标签</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-repository" role="menuitem">
+                <a href="/repository">
+                    <i class="iconfont icon-project" aria-hidden="true"></i>
+                    <span class="menu-title">项目</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-links" role="menuitem">
+                <a href="/links">
+                    <i class="iconfont icon-friend" aria-hidden="true"></i>
+                    <span class="menu-title">友链</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-about" role="menuitem">
+                <a href="/about">
+                    <i class="iconfont icon-cup" aria-hidden="true"></i>
+                    <span class="menu-title">关于</span>
+                </a>
+            </div>
+        
+        
+<div class="social-links flex sm:flex-col lg:hidden mt-5">
+    
+        <span class="social-item text-center">
+            <a target="_blank" rel="noopener" href="https://github.com/gxstax">
+                <i class="iconfont social-icon icon-github"></i>
+                <span class="menu-title hidden lg:inline">menu.github</span>
+            </a>
+        </span>
+    
+        <span class="social-item text-center">
+            <a target="_blank" rel="noopener" href="https://t.me/gxstax">
+                <i class="iconfont social-icon icon-telegram"></i>
+                <span class="menu-title hidden lg:inline">menu.telegram</span>
+            </a>
+        </span>
+    
+        <span class="social-item text-center">
+            <a target="_blank" rel="noopener" href="https://twitter.com/Ant78261681">
+                <i class="iconfont social-icon icon-twitter"></i>
+                <span class="menu-title hidden lg:inline">menu.twitter</span>
+            </a>
+        </span>
+    
+        <span class="social-item text-center">
+            <a target="_blank" rel="noopener" href="https://rss.com/podcasts/ant/">
+                <i class="iconfont social-icon icon-rss"></i>
+                <span class="menu-title hidden lg:inline">menu.rss</span>
+            </a>
+        </span>
+    
+</div>
+
+
+    </nav>
+</header>
+
+        <section class="main-section">
+            
+    <main class="flex-1 px-4 py-14 md:px-5 lg:px-8 lg:py-4 relative min-h-screen">
+    
+
+    <article class="content article article-archives article-type-list" itemscope="">
+        <header class="article-header">
+            
+    
+        <h1 class="article-title text-lg" itemprop="name">
+            linux编程-文件读取操作
+        </h1>
+    
+
+
+
+            <p class="article-meta mb-3 text-xs">
+                <span class="article-date">
+    <i class="iconfont icon-calendar-check"></i>
+	<a href="/2019/05/28/linux%E7%BC%96%E7%A8%8B-%E6%96%87%E4%BB%B6%E8%AF%BB%E5%8F%96%E6%93%8D%E4%BD%9C/" class="article-date">
+	  <time datetime="2019-05-28T02:21:56.000Z" itemprop="datePublished">5月 28</time>
+	</a>
+</span>
+
+                
+    <span class="article-category">
+    <i class="iconfont icon-folder"></i>
+    <a class="article-category-link" href="/categories/linuxProgram/">linuxProgram</a>
+  </span>
+
+
+                
+    <span class="article-tags">
+    <i class="iconfont icon-tag"></i>
+    <a class="article-tag-none-link" href="/tags/linuxProgram/" rel="tag">linuxProgram</a>
+  </span>
+
+
+                <span class="_partial/post-comment"><i class="icon icon-comment"></i>
+                    <a href="/2019/05/28/linux%E7%BC%96%E7%A8%8B-%E6%96%87%E4%BB%B6%E8%AF%BB%E5%8F%96%E6%93%8D%E4%BD%9C/#comments" class="article-comment-link">
+                        评论
+                    </a>
+                </span>
+                
+    
+        <span class="post-wordcount" itemprop="wordCount">字数统计: 1.1k(字)</span>
+    
+    
+        <span class="post-readcount" itemprop="timeRequired">阅读时长: 5(分)</span>
+    
+
+
+            </p>
+        </header>
+        <div class="marked-body article-body">
+            <h3 id="这里写一个最简单的文件读取的操作流程："><a href="#这里写一个最简单的文件读取的操作流程：" class="headerlink" title="这里写一个最简单的文件读取的操作流程："></a>这里写一个最简单的文件读取的操作流程：</h3><ol>
+<li><p>安装环境</p>
+<p>我的系统是centos7，默认是不带有linux函数系统手册的，所以有需要的要先安装一下。具体的命令如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ yum -y install man-pages</span><br></pre></td></tr></table></figure>
+
+<p>出现如下提示，说明安装成功；</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ Running transaction 正在安装 : man-pages-3.53-5.el7.noarch</span><br><span class="line">$ 1/1 验证中 : man-pages-3.53-5.el7.noarch</span><br><span class="line">$ 1/1 已安装: man-pages.noarch 0:3.53-5.el7</span><br><span class="line">$ 完毕！</span><br></pre></td></tr></table></figure></li>
+<li><p>开始着手写我们的程序</p>
+<ul>
+<li><p>文件读取操作</p>
+<p>我们这里随便建一个c程序，就叫open_test1.c,首先写一个main函数</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>下面我们需要查询手册，来看linux系统是怎么打开一个文件的；这里我们要使用man 2 open 命令查看：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ man 2 open</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>OPEN(2)                     BSD System Calls Manual                    OPEN(2)</p>
+<p>NAME</p>
+<pre><code> open, openat -- open or create a file for reading or writing
+</code></pre>
+<p>SYNOPSIS</p>
+<pre><code> #include &lt;fcntl.h&gt;
+
+ int
+ open(const char *path, int oflag, ...);
+
+ int
+ openat(int fd, const char *path, int oflag, ...);
+</code></pre>
+<p>DESCRIPTION</p>
+<pre><code> The file name specified by path is opened for reading and/or writing, as specified by the
+ argument oflag; the file descriptor is returned to the calling process.
+</code></pre>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">The oflag argument may indicate that the file is to be created <span class="keyword">if</span> it does not exist (by speci-</span><br><span class="line">fying the O_CREAT flag).  In this <span class="keyword">case</span>, open() and openat() require an additional argument</span><br><span class="line">mode_t mode; the file is created with mode mode as described <span class="keyword">in</span> <span class="built_in">chmod</span>(2) and modified by the</span><br><span class="line">process<span class="string">&#x27; umask value (see umask(2)).</span></span><br><span class="line"><span class="string">省略部分内容..........</span></span><br></pre></td></tr></table></figure>
+</blockquote>
+<p>具体的描述如如上面所示，所以我们根据他给我们的提示，写一个打开文件的操作，我们的程序中增加如下代码：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/stat.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;fcntl.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">        <span class="type">int</span> fd = <span class="number">0</span>;</span><br><span class="line">        fd = open(<span class="string">&quot;./file.txt&quot;</span>,O_RDWR);</span><br><span class="line">        <span class="keyword">if</span>(<span class="number">-1</span> == fd)</span><br><span class="line">        &#123;</span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">&quot;open fail\n&quot;</span>);</span><br><span class="line">                <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">&quot;open ok\n&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">         <span class="comment">// 关闭文件</span></span><br><span class="line">        close(fd);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果文件打开正常，会打印出，open ok；</p>
+</li>
+<li><p>写文件操作</p>
+<p>同样的我们去查写操作手册，命令为：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ man 2 write</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>WRITE(2)                    BSD System Calls Manual                   WRITE(2)</p>
+<p>NAME</p>
+<pre><code> pwrite, write, writev -- write output
+</code></pre>
+<p>LIBRARY</p>
+<pre><code> Standard C Library (libc, -lc)
+</code></pre>
+<p>SYNOPSIS</p>
+<pre><code> #include &lt;unistd.h&gt;
+
+ ssize_t
+ pwrite(int fildes, const void *buf, size_t nbyte, off_t offset);
+
+ ssize_t
+ write(int fildes, const void *buf, size_t nbyte);
+
+ #include &lt;sys/uio.h&gt;
+
+ ssize_t
+ writev(int fildes, const struct iovec *iov, int iovcnt);
+</code></pre>
+<p>DESCRIPTION</p>
+<p>省略部分内容…………………</p>
+</blockquote>
+<p>所以我们的程序中增加代码如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/stat.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;fcntl.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line">  </span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">        <span class="type">int</span> fd = <span class="number">0</span>;</span><br><span class="line">        <span class="comment">// 打开file.txt文件</span></span><br><span class="line">        fd = open(<span class="string">&quot;./file.txt&quot;</span>,O_RDWR);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span>(<span class="number">-1</span> == fd)</span><br><span class="line">        &#123;</span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">&quot;open fail\n&quot;</span>);</span><br><span class="line">                <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">&quot;open ok\n&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 往file.txt文件里面写入hello world</span></span><br><span class="line">        <span class="type">char</span> buf[] = <span class="string">&quot;hello world&quot;</span>;</span><br><span class="line">        write(fd,(<span class="type">void</span> *)buf,<span class="number">11</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//ssize_t write(int fd, const void *buf, size_t count);</span></span><br><span class="line"></span><br><span class="line">	    <span class="comment">// 关闭文件</span></span><br><span class="line">        close(fd);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+<li><p>读取写入文件的到缓冲区，然后输出</p>
+<p>读取file.txt文件里的内容到buf2中，然后输出，同样我们查看读文件的函数命令: </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ man 2 <span class="built_in">read</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>READ(2)                     BSD System Calls Manual                    READ(2)</p>
+<p>NAME</p>
+<pre><code> pread, read, readv -- read input
+</code></pre>
+<p>LIBRARY</p>
+<pre><code> Standard C Library (libc, -lc)
+</code></pre>
+<p>SYNOPSIS</p>
+<pre><code> #include &lt;sys/types.h&gt;
+ #include &lt;sys/uio.h&gt;
+ #include &lt;unistd.h&gt;
+</code></pre>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">ssize_t</span><br><span class="line">pread(int d, void *buf, size_t nbyte, off_t offset);</span><br><span class="line"></span><br><span class="line">ssize_t</span><br><span class="line"><span class="built_in">read</span>(int fildes, void *buf, size_t nbyte);</span><br><span class="line"></span><br><span class="line">ssize_t</span><br><span class="line">readv(int d, const struct iovec *iov, int iovcnt);</span><br><span class="line">省略剩余内容.....................</span><br></pre></td></tr></table></figure>
+</blockquote>
+<p>然后我们的程序增加如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/stat.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;fcntl.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">        <span class="type">int</span> fd = <span class="number">0</span>;</span><br><span class="line">        <span class="comment">// 打开file.txt文件</span></span><br><span class="line">        fd = open(<span class="string">&quot;./file.txt&quot;</span>,O_RDWR);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span>(<span class="number">-1</span> == fd)</span><br><span class="line">        &#123;</span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">&quot;open fail\n&quot;</span>);</span><br><span class="line">                <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">&quot;open ok\n&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 往file.txt文件里面写入hello world</span></span><br><span class="line">        <span class="type">char</span> buf[] = <span class="string">&quot;hello world&quot;</span>;</span><br><span class="line">        write(fd,(<span class="type">void</span> *)buf,<span class="number">11</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//ssize_t write(int fd, const void *buf, size_t count);</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 把文件指向调到文件头部位置</span></span><br><span class="line">        lseek(fd, SEEK_SET, <span class="number">0</span>);</span><br><span class="line">        <span class="comment">//off_t lseek(int fd, off_t offset, int whence);</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 读取file.txt的内容到buf2中，然后输出</span></span><br><span class="line">        <span class="type">char</span> buf2[<span class="number">30</span>] = &#123;<span class="number">0</span>&#125;;</span><br><span class="line">        read(fd, buf2, <span class="keyword">sizeof</span>(buf2));</span><br><span class="line"></span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;buf2 = %s\n&quot;</span>, buf2);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 关闭文件</span></span><br><span class="line">        close(fd);</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>到此为止，我们的程序基本就算是写完了！</p>
+</li>
+</ul>
+</li>
+<li><p>运行</p>
+<ul>
+<li><p>那么让我们编译运行一下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ gcc open_test1.c</span><br></pre></td></tr></table></figure>
+
+<p>如果没有报错，则说明我们的程序没有问题：编译后会出现一个a.out文件如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ ll</span><br><span class="line">总用量 20</span><br><span class="line">-rwxr-xr-x. 1 root root 8704 5月 28 10:19 a.out</span><br><span class="line">-rw-r–r--. 1 root root 11 5月 28 09:52 file.txt</span><br><span class="line">-rw-r–r--. 1 root root 757 5月 28 10:12 open_test1.c</span><br></pre></td></tr></table></figure>
+
+<p>然后让我们运行一下看一下结果：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ ./a.out</span><br><span class="line">open ok</span><br><span class="line">buf2 = hello world</span><br></pre></td></tr></table></figure>
+
+<p>成功输出！！！</p>
+</li>
+</ul>
+</li>
+</ol>
+<p>到这里一个简单的文件打开-&gt;写入-&gt;输出的简单操作就完成了。</p>
+
+        </div>
+        
+<blockquote class="copyright">
+    <p><strong>本文链接 : </strong><a class="permalink" href="https://gxstax.github.io/2019/05/28/linux%E7%BC%96%E7%A8%8B-%E6%96%87%E4%BB%B6%E8%AF%BB%E5%8F%96%E6%93%8D%E4%BD%9C/">https://gxstax.github.io/2019/05/28/linux编程-文件读取操作/</a></p>
+    <p><strong>This article is available under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener noreferrer">Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)</a> License</strong></p>
+</blockquote>
+
+
+    </article>
+    
+    <section id="comments">
+        
+    </section>
+
+
+    
+
+</main>
+
+
+<aside style="" id="sidebar" class="aside aside-fixture">
+    <div class="toc-sidebar">
+        <nav id="toc" class="article-toc">
+            <h3 class="toc-title">文章目录</h3>
+            <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%99%E9%87%8C%E5%86%99%E4%B8%80%E4%B8%AA%E6%9C%80%E7%AE%80%E5%8D%95%E7%9A%84%E6%96%87%E4%BB%B6%E8%AF%BB%E5%8F%96%E7%9A%84%E6%93%8D%E4%BD%9C%E6%B5%81%E7%A8%8B%EF%BC%9A"><span class="toc-number">1.</span> <span class="toc-text">这里写一个最简单的文件读取的操作流程：</span></a></li></ol>
+        </nav>
+    </div>
+</aside>
+
+
+
+
+
+        </section>
+        <footer class="hidden lg:block fixed bottom-0 left-0 sm:w-1/12 lg:w-1/6 bg-gray-100 z-40">
+    
+    <div class="footer-social-links">
+        
+            <a target="_blank" rel="noopener" href="https://github.com/gxstax">
+                <i class="iconfont icon-github"></i>
+            </a>
+        
+            <a target="_blank" rel="noopener" href="https://t.me/gxstax">
+                <i class="iconfont icon-telegram"></i>
+            </a>
+        
+            <a target="_blank" rel="noopener" href="https://twitter.com/Ant78261681">
+                <i class="iconfont icon-twitter"></i>
+            </a>
+        
+            <a target="_blank" rel="noopener" href="https://rss.com/podcasts/ant/">
+                <i class="iconfont icon-rss"></i>
+            </a>
+        
+    </div>
+    
+    
+</footer>
+
+        <div id="mask" class="hidden mask fixed inset-0 bg-gray-900 opacity-75 z-40"></div>
+        <div id="search-view-container" class="hidden shadow-xl"></div>
+        
+<script src="/js/dom-event.min.js"></script>
+
+
+
+<script src="/js/local-search.min.js"></script>
+
+
+
+    <script src="//cdn.jsdelivr.net/npm/lightgallery.js@1.1.3/dist/js/lightgallery.min.js"></script>
+    
+<script src="/js/light-gallery.min.js"></script>
+
+
+
+
+
+
+    </body>
+</html>

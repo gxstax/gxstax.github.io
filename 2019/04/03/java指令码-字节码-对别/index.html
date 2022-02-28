@@ -1,0 +1,1894 @@
+<!DOCTYPE html>
+<html  lang="zh-CN" >
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, maximum-scale=5, viewport-fit=cover">
+    <title>java指令码 字节码 对别 | 马以的博客</title>
+    <meta name="description" content="java 【指令码】【子节码】 对比 指令从0x00-0xc9 没有0xba    常量入栈指令       指令码 操作码（助记符） 操作数 描述（栈指操作数栈）   0x01 aconst_null  null值入栈。   0x02 iconst_m1  -1(int)值入栈。   0x03 iconst_0  0(int)值入栈。   0x04 iconst_1  1(int)值入栈。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java指令码 字节码 对别">
+<meta property="og:url" content="https://gxstax.github.io/2019/04/03/java%E6%8C%87%E4%BB%A4%E7%A0%81-%E5%AD%97%E8%8A%82%E7%A0%81-%E5%AF%B9%E5%88%AB/index.html">
+<meta property="og:site_name" content="马以的博客">
+<meta property="og:description" content="java 【指令码】【子节码】 对比 指令从0x00-0xc9 没有0xba    常量入栈指令       指令码 操作码（助记符） 操作数 描述（栈指操作数栈）   0x01 aconst_null  null值入栈。   0x02 iconst_m1  -1(int)值入栈。   0x03 iconst_0  0(int)值入栈。   0x04 iconst_1  1(int)值入栈。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-04-03T03:45:52.000Z">
+<meta property="article:modified_time" content="2022-02-27T11:30:00.837Z">
+<meta property="article:author" content="马以">
+<meta property="article:tag" content="jvm">
+<meta name="twitter:card" content="summary">
+
+    
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
+
+    
+<link rel="stylesheet" href="/css/common.min.css">
+
+
+
+    
+    
+    
+    
+        <link href="//cdn.jsdelivr.net/npm/lightgallery.js@1.1.3/dist/css/lightgallery.min.css" rel="stylesheet">
+    
+    
+    
+<link rel="stylesheet" href="/css/iconfont.min.css">
+
+    
+<meta name="generator" content="Hexo 5.4.1"></head>
+
+    <body>
+        <header class="header header-fixture">
+    <div class="profile-search-wrap flex sm:block">
+        
+        
+        <div class="profile sm:text-center md:px-1 lg:px-3 sm:pb-4 sm:pt-6">
+            <a id="avatar" role="link" href="https://github.com/gxstax" class="inline-block lg:w-16 lg:h-16 w-8 h-8 m-2" target="_blank" rel="noopener" rel="noreferrer" >
+                <img src="https://www.gravatar.com/avatar/c41cd3c9e162f67fe7333c672cffeafd?s=128" class="rounded-full" alt="avatar">
+            </a>
+            <h2 id="name" class="hidden lg:block">Ant</h2>
+            <h3 id="title" class="hidden xl:block">笔耕不辍，钟情翰墨</h3>
+            
+            <small id="location" class="hidden lg:block">
+                <i class="iconfont icon-map-icon"></i>
+                ShenZhen, GuangDong
+            </small>
+            
+        </div>
+        
+        
+<div class="search flex-1 flex lg:inline-block sm:hidden lg:px-4 lg:mt-2 lg:mb-4 lg:w-full">
+    <form id="search-form" class="my-auto flex-1 lg:border lg:border-solid lg:border-gray-200">
+        <div class="input-group table bg-gray-100 lg:bg-white w-full">
+            <input id="search-input" type="text" placeholder="搜索" class="inline-block w-full bg-gray-100 lg:bg-white">
+            <span class="table-cell">
+                <button name="search tigger button" disabled>
+                    <i class="iconfont icon-search m-2"></i>
+                </button>
+            </span>
+        </div>
+    </form>
+        
+<div id="content-json" data-placeholder="搜索" class="invisible hidden">/content.json</div>
+<script id="search-teamplate" type="text/html" data-path="/content.json">
+    <div>
+        <div class="search-header bg-gray-400">
+            <input id="actual-search-input" model="keyword" ref="input" class="inline-block w-full h-10 px-2 py-1" placeholder="搜索" type="text">
+        </div>
+        <div class="search-result bg-gray-200">
+            {{#each searchPosts}}
+            <a href="/{{ path }}" class="result-item block px-2 pb-3 mb-1 pt-1 hover:bg-indigo-100">
+                <i class="iconfont icon-file"></i>
+                <h1 class="result-title inline font-medium text-lg">{{ title }}</h1>
+                <p class="result-content text-gray-600 text-sm">{{{ text }}}</p>
+            </a>
+            {{/each}}
+        </div>
+    </div>
+</script>
+
+</div>
+
+
+        <button name="menu toogle button" id="menu-toggle-btn" class="block sm:hidden p-3" role="button" aria-expanded="false">
+            <i class="iconfont icon-hamburger"></i>
+        </button>
+    </div>
+    <nav id="menu-nav" class="hidden sm:flex flex-col">
+        
+        
+            <div class="menu-item menu-home" role="menuitem">
+                <a href="/.">
+                    <i class="iconfont icon-home" aria-hidden="true"></i>
+                    <span class="menu-title">首页</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-archives" role="menuitem">
+                <a href="/archives">
+                    <i class="iconfont icon-archive" aria-hidden="true"></i>
+                    <span class="menu-title">归档</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-categories" role="menuitem">
+                <a href="/categories">
+                    <i class="iconfont icon-folder" aria-hidden="true"></i>
+                    <span class="menu-title">分类</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-tags" role="menuitem">
+                <a href="/tags">
+                    <i class="iconfont icon-tag" aria-hidden="true"></i>
+                    <span class="menu-title">标签</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-repository" role="menuitem">
+                <a href="/repository">
+                    <i class="iconfont icon-project" aria-hidden="true"></i>
+                    <span class="menu-title">项目</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-links" role="menuitem">
+                <a href="/links">
+                    <i class="iconfont icon-friend" aria-hidden="true"></i>
+                    <span class="menu-title">友链</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-about" role="menuitem">
+                <a href="/about">
+                    <i class="iconfont icon-cup" aria-hidden="true"></i>
+                    <span class="menu-title">关于</span>
+                </a>
+            </div>
+        
+        
+<div class="social-links flex sm:flex-col lg:hidden mt-5">
+    
+        <span class="social-item text-center">
+            <a target="_blank" rel="noopener" href="https://github.com/gxstax">
+                <i class="iconfont social-icon icon-github"></i>
+                <span class="menu-title hidden lg:inline">menu.github</span>
+            </a>
+        </span>
+    
+        <span class="social-item text-center">
+            <a target="_blank" rel="noopener" href="https://t.me/gxstax">
+                <i class="iconfont social-icon icon-telegram"></i>
+                <span class="menu-title hidden lg:inline">menu.telegram</span>
+            </a>
+        </span>
+    
+        <span class="social-item text-center">
+            <a target="_blank" rel="noopener" href="https://twitter.com/Ant78261681">
+                <i class="iconfont social-icon icon-twitter"></i>
+                <span class="menu-title hidden lg:inline">menu.twitter</span>
+            </a>
+        </span>
+    
+        <span class="social-item text-center">
+            <a target="_blank" rel="noopener" href="https://rss.com/podcasts/ant/">
+                <i class="iconfont social-icon icon-rss"></i>
+                <span class="menu-title hidden lg:inline">menu.rss</span>
+            </a>
+        </span>
+    
+</div>
+
+
+    </nav>
+</header>
+
+        <section class="main-section">
+            
+    <main class="flex-1 px-4 py-14 md:px-5 lg:px-8 lg:py-4 relative min-h-screen">
+    
+
+    <article class="content article article-archives article-type-list" itemscope="">
+        <header class="article-header">
+            
+    
+        <h1 class="article-title text-lg" itemprop="name">
+            java指令码 字节码 对别
+        </h1>
+    
+
+
+
+            <p class="article-meta mb-3 text-xs">
+                <span class="article-date">
+    <i class="iconfont icon-calendar-check"></i>
+	<a href="/2019/04/03/java%E6%8C%87%E4%BB%A4%E7%A0%81-%E5%AD%97%E8%8A%82%E7%A0%81-%E5%AF%B9%E5%88%AB/" class="article-date">
+	  <time datetime="2019-04-03T03:45:52.000Z" itemprop="datePublished">4月 3</time>
+	</a>
+</span>
+
+                
+    <span class="article-category">
+    <i class="iconfont icon-folder"></i>
+    <a class="article-category-link" href="/categories/jvm/">jvm</a>
+  </span>
+
+
+                
+    <span class="article-tags">
+    <i class="iconfont icon-tag"></i>
+    <a class="article-tag-none-link" href="/tags/jvm/" rel="tag">jvm</a>
+  </span>
+
+
+                <span class="_partial/post-comment"><i class="icon icon-comment"></i>
+                    <a href="/2019/04/03/java%E6%8C%87%E4%BB%A4%E7%A0%81-%E5%AD%97%E8%8A%82%E7%A0%81-%E5%AF%B9%E5%88%AB/#comments" class="article-comment-link">
+                        评论
+                    </a>
+                </span>
+                
+    
+        <span class="post-wordcount" itemprop="wordCount">字数统计: 3.9k(字)</span>
+    
+    
+        <span class="post-readcount" itemprop="timeRequired">阅读时长: 15(分)</span>
+    
+
+
+            </p>
+        </header>
+        <div class="marked-body article-body">
+            <h3 id="java-【指令码】【子节码】-对比"><a href="#java-【指令码】【子节码】-对比" class="headerlink" title="java 【指令码】【子节码】 对比"></a>java 【指令码】【子节码】 对比</h3><p> 指令从0x00-0xc9 没有0xba</p>
+<table>
+<thead>
+<tr>
+<th><strong>常量入栈指令</strong></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>指令码</strong></td>
+<td><strong>操作码（助记符）</strong></td>
+<td><strong>操作数</strong></td>
+<td><strong>描述（栈指操作数栈）</strong></td>
+</tr>
+<tr>
+<td>0x01</td>
+<td>aconst_null</td>
+<td></td>
+<td>null值入栈。</td>
+</tr>
+<tr>
+<td>0x02</td>
+<td>iconst_m1</td>
+<td></td>
+<td>-1(int)值入栈。</td>
+</tr>
+<tr>
+<td>0x03</td>
+<td>iconst_0</td>
+<td></td>
+<td>0(int)值入栈。</td>
+</tr>
+<tr>
+<td>0x04</td>
+<td>iconst_1</td>
+<td></td>
+<td>1(int)值入栈。</td>
+</tr>
+<tr>
+<td>0x05</td>
+<td>iconst_2</td>
+<td></td>
+<td>2(int)值入栈。</td>
+</tr>
+<tr>
+<td>0x06</td>
+<td>iconst_3</td>
+<td></td>
+<td>3(int)值入栈。</td>
+</tr>
+<tr>
+<td>0x07</td>
+<td>iconst_4</td>
+<td></td>
+<td>4(int)值入栈。</td>
+</tr>
+<tr>
+<td>0x08</td>
+<td>iconst_5</td>
+<td></td>
+<td>5(int)值入栈。</td>
+</tr>
+<tr>
+<td>0x09</td>
+<td>lconst_0</td>
+<td></td>
+<td>0(long)值入栈。</td>
+</tr>
+<tr>
+<td>0x0a</td>
+<td>lconst_1</td>
+<td></td>
+<td>1(long)值入栈。</td>
+</tr>
+<tr>
+<td>0x0b</td>
+<td>fconst_0</td>
+<td></td>
+<td>0(float)值入栈。</td>
+</tr>
+<tr>
+<td>0x0c</td>
+<td>fconst_1</td>
+<td></td>
+<td>1(float)值入栈。</td>
+</tr>
+<tr>
+<td>0x0d</td>
+<td>fconst_2</td>
+<td></td>
+<td>2(float)值入栈。</td>
+</tr>
+<tr>
+<td>0x0e</td>
+<td>dconst_0</td>
+<td></td>
+<td>0(double)值入栈。</td>
+</tr>
+<tr>
+<td>0x0f</td>
+<td>dconst_1</td>
+<td></td>
+<td>1(double)值入栈。</td>
+</tr>
+<tr>
+<td>0x10</td>
+<td>bipush</td>
+<td>valuebyte</td>
+<td>valuebyte值带符号扩展成int值入栈。</td>
+</tr>
+<tr>
+<td>0x11</td>
+<td>sipush</td>
+<td>valuebyte1             valuebyte2</td>
+<td>(valuebyte1 &lt;&lt; 8) | valuebyte2 值带符号扩展成int值入栈。</td>
+</tr>
+<tr>
+<td>0x12</td>
+<td>ldc</td>
+<td>indexbyte1</td>
+<td>常量池中的常量值（int, float, string reference, object reference）入栈。</td>
+</tr>
+<tr>
+<td>0x13</td>
+<td>ldc_w</td>
+<td>indexbyte1             indexbyte2</td>
+<td>常量池中常量（int, float, string reference, object reference）入栈。</td>
+</tr>
+<tr>
+<td>0x14</td>
+<td>ldc2_w</td>
+<td>indexbyte1             indexbyte2</td>
+<td>常量池中常量（long, double）入栈。</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>局部变量值转载到栈中指令</strong></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>指令码</strong></td>
+<td><strong>操作码（助记符）</strong></td>
+<td><strong>操作数</strong></td>
+<td><strong>描述（栈指操作数栈）</strong></td>
+</tr>
+<tr>
+<td>0x19</td>
+<td>(wide)aload</td>
+<td>indexbyte</td>
+<td>从局部变量indexbyte中装载引用类型值入栈。</td>
+</tr>
+<tr>
+<td>0x2a</td>
+<td>aload_0</td>
+<td></td>
+<td>从局部变量0中装载引用类型值入栈。</td>
+</tr>
+<tr>
+<td>0x2b</td>
+<td>aload_1</td>
+<td></td>
+<td>从局部变量1中装载引用类型值入栈。</td>
+</tr>
+<tr>
+<td>0x2c</td>
+<td>aload_2</td>
+<td></td>
+<td>从局部变量2中装载引用类型值入栈。</td>
+</tr>
+<tr>
+<td>0x2d</td>
+<td>aload_3</td>
+<td></td>
+<td>从局部变量3中装载引用类型值入栈。</td>
+</tr>
+<tr>
+<td>0x15</td>
+<td>(wide)iload</td>
+<td>indexbyte</td>
+<td>从局部变量indexbyte中装载int类型值入栈。</td>
+</tr>
+<tr>
+<td>0x1a</td>
+<td>iload_0</td>
+<td></td>
+<td>从局部变量0中装载int类型值入栈。</td>
+</tr>
+<tr>
+<td>0x1b</td>
+<td>iload_1</td>
+<td></td>
+<td>从局部变量1中装载int类型值入栈。</td>
+</tr>
+<tr>
+<td>0x1c</td>
+<td>iload_2</td>
+<td></td>
+<td>从局部变量2中装载int类型值入栈。</td>
+</tr>
+<tr>
+<td>0x1d</td>
+<td>iload_3</td>
+<td></td>
+<td>从局部变量3中装载int类型值入栈。</td>
+</tr>
+<tr>
+<td>0x16</td>
+<td>(wide)lload</td>
+<td>indexbyte</td>
+<td>从局部变量indexbyte中装载long类型值入栈。</td>
+</tr>
+<tr>
+<td>0x1e</td>
+<td>lload_0</td>
+<td></td>
+<td>从局部变量0中装载int类型值入栈。</td>
+</tr>
+<tr>
+<td>0x1f</td>
+<td>lload_1</td>
+<td></td>
+<td>从局部变量1中装载int类型值入栈。</td>
+</tr>
+<tr>
+<td>0x20</td>
+<td>lload_2</td>
+<td></td>
+<td>从局部变量2中装载int类型值入栈。</td>
+</tr>
+<tr>
+<td>0x21</td>
+<td>lload_3</td>
+<td></td>
+<td>从局部变量3中装载int类型值入栈。</td>
+</tr>
+<tr>
+<td>0x17</td>
+<td>(wide)fload</td>
+<td>indexbyte</td>
+<td>从局部变量indexbyte中装载float类型值入栈。</td>
+</tr>
+<tr>
+<td>0x22</td>
+<td>fload_0</td>
+<td></td>
+<td>从局部变量0中装载float类型值入栈。</td>
+</tr>
+<tr>
+<td>0x23</td>
+<td>fload_1</td>
+<td></td>
+<td>从局部变量1中装载float类型值入栈。</td>
+</tr>
+<tr>
+<td>0x24</td>
+<td>fload_2</td>
+<td></td>
+<td>从局部变量2中装载float类型值入栈。</td>
+</tr>
+<tr>
+<td>0x25</td>
+<td>fload_3</td>
+<td></td>
+<td>从局部变量3中装载float类型值入栈。</td>
+</tr>
+<tr>
+<td>0x18</td>
+<td>(wide)dload</td>
+<td>indexbyte</td>
+<td>从局部变量indexbyte中装载double类型值入栈。</td>
+</tr>
+<tr>
+<td>0x26</td>
+<td>dload_0</td>
+<td></td>
+<td>从局部变量0中装载double类型值入栈。</td>
+</tr>
+<tr>
+<td>0x27</td>
+<td>dload_1</td>
+<td></td>
+<td>从局部变量1中装载double类型值入栈。</td>
+</tr>
+<tr>
+<td>0x28</td>
+<td>dload_2</td>
+<td></td>
+<td>从局部变量2中装载double类型值入栈。</td>
+</tr>
+<tr>
+<td>0x29</td>
+<td>dload_3</td>
+<td></td>
+<td>从局部变量3中装载double类型值入栈。</td>
+</tr>
+<tr>
+<td>0x32</td>
+<td>aaload</td>
+<td></td>
+<td>从引用类型数组中装载指定项的值。</td>
+</tr>
+<tr>
+<td>0x2e</td>
+<td>iaload</td>
+<td></td>
+<td>从int类型数组中装载指定项的值。</td>
+</tr>
+<tr>
+<td>0x2f</td>
+<td>laload</td>
+<td></td>
+<td>从long类型数组中装载指定项的值。</td>
+</tr>
+<tr>
+<td>0x30</td>
+<td>faload</td>
+<td></td>
+<td>从float类型数组中装载指定项的值。</td>
+</tr>
+<tr>
+<td>0x31</td>
+<td>daload</td>
+<td></td>
+<td>从double类型数组中装载指定项的值。</td>
+</tr>
+<tr>
+<td>0x33</td>
+<td>baload</td>
+<td></td>
+<td>从boolean类型数组或byte类型数组中装载指定项的值（先转换为int类型值，后压栈）。</td>
+</tr>
+<tr>
+<td>0x34</td>
+<td>caload</td>
+<td></td>
+<td>从char类型数组中装载指定项的值（先转换为int类型值，后压栈）。</td>
+</tr>
+<tr>
+<td>0x35</td>
+<td>saload</td>
+<td></td>
+<td>从short类型数组中装载指定项的值（先转换为int类型值，后压栈）。</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>将栈顶值保存到局部变量中指令</strong></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>指令码</strong></td>
+<td><strong>操作码（助记符）</strong></td>
+<td><strong>操作数</strong></td>
+<td><strong>描述（栈指操作数栈）</strong></td>
+</tr>
+<tr>
+<td>0x3a</td>
+<td>(wide)astore</td>
+<td>indexbyte</td>
+<td>将栈顶引用类型值保存到局部变量indexbyte中。</td>
+</tr>
+<tr>
+<td>0x4b</td>
+<td>astroe_0</td>
+<td></td>
+<td>将栈顶引用类型值保存到局部变量0中。</td>
+</tr>
+<tr>
+<td>0x4c</td>
+<td>astore_1</td>
+<td></td>
+<td>将栈顶引用类型值保存到局部变量1中。</td>
+</tr>
+<tr>
+<td>0x4d</td>
+<td>astore_2</td>
+<td></td>
+<td>将栈顶引用类型值保存到局部变量2中。</td>
+</tr>
+<tr>
+<td>0x4e</td>
+<td>astore_3</td>
+<td></td>
+<td>将栈顶引用类型值保存到局部变量3中。</td>
+</tr>
+<tr>
+<td>0x36</td>
+<td>(wide)istore</td>
+<td>indexbyte</td>
+<td>将栈顶int类型值保存到局部变量indexbyte中。</td>
+</tr>
+<tr>
+<td>0x3b</td>
+<td>istore_0</td>
+<td></td>
+<td>将栈顶int类型值保存到局部变量0中。</td>
+</tr>
+<tr>
+<td>0x3c</td>
+<td>istore_1</td>
+<td></td>
+<td>将栈顶int类型值保存到局部变量1中。</td>
+</tr>
+<tr>
+<td>0x3d</td>
+<td>istore_2</td>
+<td></td>
+<td>将栈顶int类型值保存到局部变量2中。</td>
+</tr>
+<tr>
+<td>0x3e</td>
+<td>istore_3</td>
+<td></td>
+<td>将栈顶int类型值保存到局部变量3中。</td>
+</tr>
+<tr>
+<td>0x37</td>
+<td>(wide)lstore</td>
+<td>indexbyte</td>
+<td>将栈顶long类型值保存到局部变量indexbyte中。</td>
+</tr>
+<tr>
+<td>0x3f</td>
+<td>lstore_0</td>
+<td></td>
+<td>将栈顶long类型值保存到局部变量0中。</td>
+</tr>
+<tr>
+<td>0x40</td>
+<td>lstore_1</td>
+<td></td>
+<td>将栈顶long类型值保存到局部变量1中。</td>
+</tr>
+<tr>
+<td>0x41</td>
+<td>lstore_2</td>
+<td></td>
+<td>将栈顶long类型值保存到局部变量2中。</td>
+</tr>
+<tr>
+<td>0x42</td>
+<td>lstroe_3</td>
+<td></td>
+<td>将栈顶long类型值保存到局部变量3中。</td>
+</tr>
+<tr>
+<td>0x38</td>
+<td>(wide)fstore</td>
+<td>indexbyte</td>
+<td>将栈顶float类型值保存到局部变量indexbyte中。</td>
+</tr>
+<tr>
+<td>0x43</td>
+<td>fstore_0</td>
+<td></td>
+<td>将栈顶float类型值保存到局部变量0中。</td>
+</tr>
+<tr>
+<td>0x44</td>
+<td>fstore_1</td>
+<td></td>
+<td>将栈顶float类型值保存到局部变量1中。</td>
+</tr>
+<tr>
+<td>0x45</td>
+<td>fstore_2</td>
+<td></td>
+<td>将栈顶float类型值保存到局部变量2中。</td>
+</tr>
+<tr>
+<td>0x46</td>
+<td>fstore_3</td>
+<td></td>
+<td>将栈顶float类型值保存到局部变量3中。</td>
+</tr>
+<tr>
+<td>0x39</td>
+<td>(wide)dstore</td>
+<td>indexbyte</td>
+<td>将栈顶double类型值保存到局部变量indexbyte中。</td>
+</tr>
+<tr>
+<td>0x47</td>
+<td>dstore_0</td>
+<td></td>
+<td>将栈顶double类型值保存到局部变量0中。</td>
+</tr>
+<tr>
+<td>0x48</td>
+<td>dstore_1</td>
+<td></td>
+<td>将栈顶double类型值保存到局部变量1中。</td>
+</tr>
+<tr>
+<td>0x49</td>
+<td>dstore_2</td>
+<td></td>
+<td>将栈顶double类型值保存到局部变量2中。</td>
+</tr>
+<tr>
+<td>0x4a</td>
+<td>dstore_3</td>
+<td></td>
+<td>将栈顶double类型值保存到局部变量3中。</td>
+</tr>
+<tr>
+<td>0x53</td>
+<td>aastore</td>
+<td></td>
+<td>将栈顶引用类型值保存到指定引用类型数组的指定项。</td>
+</tr>
+<tr>
+<td>0x4f</td>
+<td>iastore</td>
+<td></td>
+<td>将栈顶int类型值保存到指定int类型数组的指定项。</td>
+</tr>
+<tr>
+<td>0x50</td>
+<td>lastore</td>
+<td></td>
+<td>将栈顶long类型值保存到指定long类型数组的指定项。</td>
+</tr>
+<tr>
+<td>0x51</td>
+<td>fastore</td>
+<td></td>
+<td>将栈顶float类型值保存到指定float类型数组的指定项。</td>
+</tr>
+<tr>
+<td>0x52</td>
+<td>dastore</td>
+<td></td>
+<td>将栈顶double类型值保存到指定double类型数组的指定项。</td>
+</tr>
+<tr>
+<td>0x54</td>
+<td>bastroe</td>
+<td></td>
+<td>将栈顶boolean类型值或byte类型值保存到指定boolean类型数组或byte类型数组的指定项。</td>
+</tr>
+<tr>
+<td>0x55</td>
+<td>castore</td>
+<td></td>
+<td>将栈顶char类型值保存到指定char类型数组的指定项。</td>
+</tr>
+<tr>
+<td>0x56</td>
+<td>sastore</td>
+<td></td>
+<td>将栈顶short类型值保存到指定short类型数组的指定项。</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>wide指令</strong></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>指令码</strong></td>
+<td><strong>操作码（助记符）</strong></td>
+<td><strong>操作数</strong></td>
+<td><strong>描述（栈指操作数栈）</strong></td>
+</tr>
+<tr>
+<td>0xc4</td>
+<td>wide</td>
+<td></td>
+<td>使用附加字节扩展局部变量索引（iinc指令特殊）。</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>通用（无类型）栈操作指令</strong></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>指令码</strong></td>
+<td><strong>操作码（助记符）</strong></td>
+<td><strong>操作数</strong></td>
+<td><strong>描述（栈指操作数栈）</strong></td>
+</tr>
+<tr>
+<td>0x00</td>
+<td>nop</td>
+<td></td>
+<td>空操作。</td>
+</tr>
+<tr>
+<td>0x57</td>
+<td>pop</td>
+<td></td>
+<td>从栈顶弹出一个字长的数据。</td>
+</tr>
+<tr>
+<td>0x58</td>
+<td>pop2</td>
+<td></td>
+<td>从栈顶弹出两个字长的数据。</td>
+</tr>
+<tr>
+<td>0x59</td>
+<td>dup</td>
+<td></td>
+<td>复制栈顶一个字长的数据，将复制后的数据压栈。</td>
+</tr>
+<tr>
+<td>0x5a</td>
+<td>dup_x1</td>
+<td></td>
+<td>复制栈顶一个字长的数据，弹出栈顶两个字长数据，先将复制后的数据压栈，再将弹出的两个字长数据压栈。</td>
+</tr>
+<tr>
+<td>0x5b</td>
+<td>dup_x2</td>
+<td></td>
+<td>复制栈顶一个字长的数据，弹出栈顶三个字长的数据，将复制后的数据压栈，再将弹出的三个字长的数据压栈。</td>
+</tr>
+<tr>
+<td>0x5c</td>
+<td>dup2</td>
+<td></td>
+<td>复制栈顶两个字长的数据，将复制后的两个字长的数据压栈。</td>
+</tr>
+<tr>
+<td>0x5d</td>
+<td>dup2_x1</td>
+<td></td>
+<td>复制栈顶两个字长的数据，弹出栈顶三个字长的数据，将复制后的两个字长的数据压栈，再将弹出的三个字长的数据压栈。</td>
+</tr>
+<tr>
+<td>0x5e</td>
+<td>dup2_x2</td>
+<td></td>
+<td>复制栈顶两个字长的数据，弹出栈顶四个字长的数据，将复制后的两个字长的数据压栈，再将弹出的四个字长的数据压栈。</td>
+</tr>
+<tr>
+<td>0x5f</td>
+<td>swap</td>
+<td></td>
+<td>交换栈顶两个字长的数据的位置。<a target="_blank" rel="noopener" href="http://lib.csdn.net/base/javaee">Java</a>指令中没有提供以两个字长为单位的交换指令。</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>类型转换指令</strong></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>指令码</strong></td>
+<td><strong>操作码（助记符）</strong></td>
+<td><strong>操作数</strong></td>
+<td><strong>描述（栈指操作数栈）</strong></td>
+</tr>
+<tr>
+<td>0x86</td>
+<td>i2f</td>
+<td></td>
+<td>将栈顶int类型值转换为float类型值。</td>
+</tr>
+<tr>
+<td>0x85</td>
+<td>i2l</td>
+<td></td>
+<td>将栈顶int类型值转换为long类型值。</td>
+</tr>
+<tr>
+<td>0x87</td>
+<td>i2d</td>
+<td></td>
+<td>将栈顶int类型值转换为double类型值。</td>
+</tr>
+<tr>
+<td>0x8b</td>
+<td>f2i</td>
+<td></td>
+<td>将栈顶float类型值转换为int类型值。</td>
+</tr>
+<tr>
+<td>0x8c</td>
+<td>f2l</td>
+<td></td>
+<td>将栈顶float类型值转换为long类型值。</td>
+</tr>
+<tr>
+<td>0x8d</td>
+<td>f2d</td>
+<td></td>
+<td>将栈顶float类型值转换为double类型值。</td>
+</tr>
+<tr>
+<td>0x88</td>
+<td>l2i</td>
+<td></td>
+<td>将栈顶long类型值转换为int类型值。</td>
+</tr>
+<tr>
+<td>0x89</td>
+<td>l2f</td>
+<td></td>
+<td>将栈顶long类型值转换为float类型值。</td>
+</tr>
+<tr>
+<td>0x8a</td>
+<td>l2d</td>
+<td></td>
+<td>将栈顶long类型值转换double类型值。</td>
+</tr>
+<tr>
+<td>0x8e</td>
+<td>d2i</td>
+<td></td>
+<td>将栈顶double类型值转换为int类型值。</td>
+</tr>
+<tr>
+<td>0x90</td>
+<td>d2f</td>
+<td></td>
+<td>将栈顶double类型值转换为float类型值。</td>
+</tr>
+<tr>
+<td>0x8f</td>
+<td>d2l</td>
+<td></td>
+<td>将栈顶double类型值转换为long类型值。</td>
+</tr>
+<tr>
+<td>0x91</td>
+<td>i2b</td>
+<td></td>
+<td>将栈顶int类型值截断成byte类型，后带符号扩展成int类型值入栈。</td>
+</tr>
+<tr>
+<td>0x92</td>
+<td>i2c</td>
+<td></td>
+<td>将栈顶int类型值截断成char类型值，后带符号扩展成int类型值入栈。</td>
+</tr>
+<tr>
+<td>0x93</td>
+<td>i2s</td>
+<td></td>
+<td>将栈顶int类型值截断成short类型值，后带符号扩展成int类型值入栈。</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>整数运算</strong></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>指令码</strong></td>
+<td><strong>操作码（助记符）</strong></td>
+<td><strong>操作数</strong></td>
+<td><strong>描述（栈指操作数栈）</strong></td>
+</tr>
+<tr>
+<td>0x60</td>
+<td>iadd</td>
+<td></td>
+<td>将栈顶两int类型数相加，结果入栈。</td>
+</tr>
+<tr>
+<td>0x64</td>
+<td>isub</td>
+<td></td>
+<td>将栈顶两int类型数相减，结果入栈。</td>
+</tr>
+<tr>
+<td>0x68</td>
+<td>imul</td>
+<td></td>
+<td>将栈顶两int类型数相乘，结果入栈。</td>
+</tr>
+<tr>
+<td>0x6c</td>
+<td>idiv</td>
+<td></td>
+<td>将栈顶两int类型数相除，结果入栈。</td>
+</tr>
+<tr>
+<td>0x70</td>
+<td>irem</td>
+<td></td>
+<td>将栈顶两int类型数取模，结果入栈。</td>
+</tr>
+<tr>
+<td>0x74</td>
+<td>ineg</td>
+<td></td>
+<td>将栈顶int类型值取负，结果入栈。</td>
+</tr>
+<tr>
+<td>0x61</td>
+<td>ladd</td>
+<td></td>
+<td>将栈顶两long类型数相加，结果入栈。</td>
+</tr>
+<tr>
+<td>0x65</td>
+<td>lsub</td>
+<td></td>
+<td>将栈顶两long类型数相减，结果入栈。</td>
+</tr>
+<tr>
+<td>0x69</td>
+<td>lmul</td>
+<td></td>
+<td>将栈顶两long类型数相乘，结果入栈。</td>
+</tr>
+<tr>
+<td>0x6d</td>
+<td>ldiv</td>
+<td></td>
+<td>将栈顶两long类型数相除，结果入栈。</td>
+</tr>
+<tr>
+<td>0x71</td>
+<td>lrem</td>
+<td></td>
+<td>将栈顶两long类型数取模，结果入栈。</td>
+</tr>
+<tr>
+<td>0x75</td>
+<td>lneg</td>
+<td></td>
+<td>将栈顶long类型值取负，结果入栈。</td>
+</tr>
+<tr>
+<td>0x84</td>
+<td>(wide)iinc</td>
+<td>indexbyte             constbyte</td>
+<td>将整数值constbyte加到indexbyte指定的int类型的局部变量中。</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>浮点运算</strong></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>指令码</strong></td>
+<td><strong>操作码（助记符）</strong></td>
+<td><strong>操作数</strong></td>
+<td><strong>描述（栈指操作数栈）</strong></td>
+</tr>
+<tr>
+<td>0x62</td>
+<td>fadd</td>
+<td></td>
+<td>将栈顶两float类型数相加，结果入栈。</td>
+</tr>
+<tr>
+<td>0x66</td>
+<td>fsub</td>
+<td></td>
+<td>将栈顶两float类型数相减，结果入栈。</td>
+</tr>
+<tr>
+<td>0x6a</td>
+<td>fmul</td>
+<td></td>
+<td>将栈顶两float类型数相乘，结果入栈。</td>
+</tr>
+<tr>
+<td>0x6e</td>
+<td>fdiv</td>
+<td></td>
+<td>将栈顶两float类型数相除，结果入栈。</td>
+</tr>
+<tr>
+<td>0x72</td>
+<td>frem</td>
+<td></td>
+<td>将栈顶两float类型数取模，结果入栈。</td>
+</tr>
+<tr>
+<td>0x76</td>
+<td>fneg</td>
+<td></td>
+<td>将栈顶float类型值取反，结果入栈。</td>
+</tr>
+<tr>
+<td>0x63</td>
+<td>dadd</td>
+<td></td>
+<td>将栈顶两double类型数相加，结果入栈。</td>
+</tr>
+<tr>
+<td>0x67</td>
+<td>dsub</td>
+<td></td>
+<td>将栈顶两double类型数相减，结果入栈。</td>
+</tr>
+<tr>
+<td>0x6b</td>
+<td>dmul</td>
+<td></td>
+<td>将栈顶两double类型数相乘，结果入栈。</td>
+</tr>
+<tr>
+<td>0x6f</td>
+<td>ddiv</td>
+<td></td>
+<td>将栈顶两double类型数相除，结果入栈。</td>
+</tr>
+<tr>
+<td>0x73</td>
+<td>drem</td>
+<td></td>
+<td>将栈顶两double类型数取模，结果入栈。</td>
+</tr>
+<tr>
+<td>0x77</td>
+<td>dneg</td>
+<td></td>
+<td>将栈顶double类型值取负，结果入栈。</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>逻辑运算——移位运算</strong></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>指令码</strong></td>
+<td><strong>操作码（助记符）</strong></td>
+<td><strong>操作数</strong></td>
+<td><strong>描述（栈指操作数栈）</strong></td>
+</tr>
+<tr>
+<td>0x78</td>
+<td>ishl</td>
+<td></td>
+<td>左移int类型值。</td>
+</tr>
+<tr>
+<td>0x79</td>
+<td>lshl</td>
+<td></td>
+<td>左移long类型值。</td>
+</tr>
+<tr>
+<td>0x7a</td>
+<td>ishr</td>
+<td></td>
+<td>算术右移int类型值。</td>
+</tr>
+<tr>
+<td>0x7b</td>
+<td>lshr</td>
+<td></td>
+<td>算术右移long类型值。</td>
+</tr>
+<tr>
+<td>0x7c</td>
+<td>iushr</td>
+<td></td>
+<td>逻辑右移int类型值。</td>
+</tr>
+<tr>
+<td>0x7d</td>
+<td>lushr</td>
+<td></td>
+<td>逻辑右移long类型值。</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>逻辑运算——按位布尔运算</strong></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>指令码</strong></td>
+<td><strong>操作码（助记符）</strong></td>
+<td><strong>操作数</strong></td>
+<td><strong>描述（栈指操作数栈）</strong></td>
+</tr>
+<tr>
+<td>0x73</td>
+<td>iand</td>
+<td></td>
+<td>对int类型按位与运算。</td>
+</tr>
+<tr>
+<td>0x7f</td>
+<td>land</td>
+<td></td>
+<td>对long类型的按位与运算。</td>
+</tr>
+<tr>
+<td>0x80</td>
+<td>ior</td>
+<td></td>
+<td>对int类型的按位或运算。</td>
+</tr>
+<tr>
+<td>0x81</td>
+<td>lor</td>
+<td></td>
+<td>对long类型的按位或运算。</td>
+</tr>
+<tr>
+<td>0x82</td>
+<td>ixor</td>
+<td></td>
+<td>对int类型的按位异或运算。</td>
+</tr>
+<tr>
+<td>0x83</td>
+<td>lxor</td>
+<td></td>
+<td>对long类型的按位异或运算。</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>控制流指令——条件跳转指令</strong></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>指令码</strong></td>
+<td><strong>操作码（助记符）</strong></td>
+<td><strong>操作数</strong></td>
+<td><strong>描述（栈指操作数栈）</strong></td>
+</tr>
+<tr>
+<td>0x99</td>
+<td>ifeq</td>
+<td>branchbyte1             branchbyte2</td>
+<td>若栈顶int类型值为0则跳转。</td>
+</tr>
+<tr>
+<td>0x9a</td>
+<td>ifne</td>
+<td>branchbyte1             branchbyte2</td>
+<td>若栈顶int类型值不为0则跳转。</td>
+</tr>
+<tr>
+<td>0x9b</td>
+<td>iflt</td>
+<td>branchbyte1             branchbyte2</td>
+<td>若栈顶int类型值小于0则跳转。</td>
+</tr>
+<tr>
+<td>0x9e</td>
+<td>ifle</td>
+<td>branchbyte1             branchbyte2</td>
+<td>若栈顶int类型值小于等于0则跳转。</td>
+</tr>
+<tr>
+<td>0x9d</td>
+<td>ifgt</td>
+<td>branchbyte1             branchbyte2</td>
+<td>若栈顶int类型值大于0则跳转。</td>
+</tr>
+<tr>
+<td>0x9c</td>
+<td>ifge</td>
+<td>branchbyte1             branchbyte2</td>
+<td>若栈顶int类型值大于等于0则跳转。</td>
+</tr>
+<tr>
+<td>0x9f</td>
+<td>if_icmpeq</td>
+<td>branchbyte1             branchbyte2</td>
+<td>若栈顶两int类型值相等则跳转。</td>
+</tr>
+<tr>
+<td>0xa0</td>
+<td>if_icmpne</td>
+<td>branchbyte1             branchbyte2</td>
+<td>若栈顶两int类型值不相等则跳转。</td>
+</tr>
+<tr>
+<td>0xa1</td>
+<td>if_icmplt</td>
+<td>branchbyte1             branchbyte2</td>
+<td>若栈顶两int类型值前小于后则跳转。</td>
+</tr>
+<tr>
+<td>0xa4</td>
+<td>if_icmple</td>
+<td>branchbyte1             branchbyte2</td>
+<td>若栈顶两int类型值前小于等于后则跳转。</td>
+</tr>
+<tr>
+<td>0xa3</td>
+<td>if_icmpgt</td>
+<td>branchbyte1             branchbyte2</td>
+<td>若栈顶两int类型值前大于后则跳转。</td>
+</tr>
+<tr>
+<td>0xa2</td>
+<td>if_icmpge</td>
+<td>branchbyte1             branchbyte2</td>
+<td>若栈顶两int类型值前大于等于后则跳转。</td>
+</tr>
+<tr>
+<td>0xc6</td>
+<td>ifnull</td>
+<td>branchbyte1             branchbyte2</td>
+<td>若栈顶引用值为null则跳转。</td>
+</tr>
+<tr>
+<td>0xc7</td>
+<td>ifnonnull</td>
+<td>branchbyte1             branchbyte2</td>
+<td>若栈顶引用值不为null则跳转。</td>
+</tr>
+<tr>
+<td>0xa5</td>
+<td>if_acmpeq</td>
+<td>branchbyte1             branchbyte2</td>
+<td>若栈顶两引用类型值相等则跳转。</td>
+</tr>
+<tr>
+<td>0xa6</td>
+<td>if_acmpne</td>
+<td>branchbyte1             branchbyte2</td>
+<td>若栈顶两引用类型值不相等则跳转。</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>控制流指令——比较指令</strong></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>指令码</strong></td>
+<td><strong>操作码（助记符）</strong></td>
+<td><strong>操作数</strong></td>
+<td><strong>描述（栈指操作数栈）</strong></td>
+</tr>
+<tr>
+<td>0x94</td>
+<td>lcmp</td>
+<td></td>
+<td>比较栈顶两long类型值，前者大，1入栈；相等，0入栈；后者大，-1入栈。</td>
+</tr>
+<tr>
+<td>0x95</td>
+<td>fcmpl</td>
+<td></td>
+<td>比较栈顶两float类型值，前者大，1入栈；相等，0入栈；后者大，-1入栈；有NaN存在，-1入栈。</td>
+</tr>
+<tr>
+<td>0x96</td>
+<td>fcmpg</td>
+<td></td>
+<td>比较栈顶两float类型值，前者大，1入栈；相等，0入栈；后者大，-1入栈；有NaN存在，-1入栈。</td>
+</tr>
+<tr>
+<td>0x97</td>
+<td>dcmpl</td>
+<td></td>
+<td>比较栈顶两double类型值，前者大，1入栈；相等，0入栈；后者大，-1入栈；有NaN存在，-1入栈。</td>
+</tr>
+<tr>
+<td>0x98</td>
+<td>dcmpg</td>
+<td></td>
+<td>比较栈顶两double类型值，前者大，1入栈；相等，0入栈；后者大，-1入栈；有NaN存在，-1入栈。</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>控制流指令——无条件跳转指令</strong></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>指令码</strong></td>
+<td><strong>操作码（助记符）</strong></td>
+<td><strong>操作数</strong></td>
+<td><strong>描述（栈指操作数栈）</strong></td>
+</tr>
+<tr>
+<td>0xa7</td>
+<td>goto</td>
+<td>branchbyte1             branchbyte2</td>
+<td>无条件跳转到指定位置。</td>
+</tr>
+<tr>
+<td>0xc8</td>
+<td>goto_w</td>
+<td>branchbyte1             branchbyte2             branchbyte3             branchbyte4</td>
+<td>无条件跳转到指定位置（宽索引）。</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>控制流指令——表跳转指令</strong></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>指令码</strong></td>
+<td><strong>操作码（助记符）</strong></td>
+<td><strong>操作数</strong></td>
+<td><strong>描述（栈指操作数栈）</strong></td>
+</tr>
+<tr>
+<td>0xaa</td>
+<td>tableswitch</td>
+<td>&lt;0-3bytepad&gt;             defaultbyte1             defaultbyte2             defaultbyte3             defaultbyte4             lowbyte1             lowbyte2             lowbyte3             lowbyte4             highbyte1             highbyte2             highbyte3             highbyte4             jump offsets…</td>
+<td>通过索引访问跳转表，并跳转。</td>
+</tr>
+<tr>
+<td>0xab</td>
+<td>lookupswitch</td>
+<td>&lt;0-3bytepad&gt;             defaultbyte1             defaultbyte2             defaultbyte3             defaultbyte4             npairs1             npairs2             npairs3             npairs4             match offsets</td>
+<td>通过键值访问跳转表，并跳转。</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>控制流指令——异常和finally</strong></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>指令码</strong></td>
+<td><strong>操作码（助记符）</strong></td>
+<td><strong>操作数</strong></td>
+<td><strong>描述（栈指操作数栈）</strong></td>
+</tr>
+<tr>
+<td>0xbf</td>
+<td>athrow</td>
+<td></td>
+<td>抛出异常。</td>
+</tr>
+<tr>
+<td>0xa8</td>
+<td>jsr</td>
+<td>branchbyte1             branchbyte2</td>
+<td>跳转到子例程序。</td>
+</tr>
+<tr>
+<td>0xc9</td>
+<td>jsr_w</td>
+<td>branchbyte1             branchbyte2             branchbyte3             branchbyte4</td>
+<td>跳转到子例程序（宽索引）。</td>
+</tr>
+<tr>
+<td>0xa9</td>
+<td>(wide)ret</td>
+<td>indexbyte</td>
+<td>返回子例程序。</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>对象操作指令</strong></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>指令码</strong></td>
+<td><strong>操作码（助记符）</strong></td>
+<td><strong>操作数</strong></td>
+<td><strong>描述（栈指操作数栈）</strong></td>
+</tr>
+<tr>
+<td>0xbb</td>
+<td>new</td>
+<td>indexbyte1             indexbyte2</td>
+<td>创建新的对象实例。</td>
+</tr>
+<tr>
+<td>0xc0</td>
+<td>checkcast</td>
+<td>indexbyte1             indexbyte</td>
+<td>类型强转。</td>
+</tr>
+<tr>
+<td>0xc1</td>
+<td>instanceof</td>
+<td>indexbyte1             indexbyte2</td>
+<td>判断类型。</td>
+</tr>
+<tr>
+<td>0xb4</td>
+<td>getfield</td>
+<td>indexbyte1             indexbyte2</td>
+<td>获取对象字段的值。</td>
+</tr>
+<tr>
+<td>0xb5</td>
+<td>putfield</td>
+<td>indexbyte1             indexbyte2</td>
+<td>给对象字段赋值。</td>
+</tr>
+<tr>
+<td>0xb2</td>
+<td>getstatic</td>
+<td>indexbyte1             indexbyte2</td>
+<td>获取静态字段的值。</td>
+</tr>
+<tr>
+<td>0xb3</td>
+<td>putstatic</td>
+<td>indexbyte1             indexbyte2</td>
+<td>给静态字段赋值。</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>数组操作指令</strong></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>指令码</strong></td>
+<td><strong>操作码（助记符）</strong></td>
+<td><strong>操作数</strong></td>
+<td><strong>描述（栈指操作数栈）</strong></td>
+</tr>
+<tr>
+<td>0xbc</td>
+<td>newarray</td>
+<td>atype</td>
+<td>创建type类型的数组。</td>
+</tr>
+<tr>
+<td>0xbd</td>
+<td>anewarray</td>
+<td>indexbyte1             indexbyte2</td>
+<td>创建引用类型的数组。</td>
+</tr>
+<tr>
+<td>0xbe</td>
+<td>arraylength</td>
+<td></td>
+<td>获取一维数组的长度。</td>
+</tr>
+<tr>
+<td>0xc5</td>
+<td>multianewarray</td>
+<td>indexbyte1             indexbyte2             dimension</td>
+<td>创建dimension维度的数组。</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>方法调用指令</strong></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>指令码</strong></td>
+<td><strong>操作码（助记符）</strong></td>
+<td><strong>操作数</strong></td>
+<td><strong>描述（栈指操作数栈）</strong></td>
+</tr>
+<tr>
+<td>0xb7</td>
+<td>invokespecial</td>
+<td>indexbyte1             indexbyte2</td>
+<td>编译时方法绑定调用方法。</td>
+</tr>
+<tr>
+<td>0xb6</td>
+<td>invokevirtual</td>
+<td>indexbyte1             indexbyte2</td>
+<td>运行时方法绑定调用方法。</td>
+</tr>
+<tr>
+<td>0xb8</td>
+<td>invokestatic</td>
+<td>indexbyte1             indexbyte2</td>
+<td>调用静态方法。</td>
+</tr>
+<tr>
+<td>0xb9</td>
+<td>invokeinterface</td>
+<td>indexbyte1             indexbyte2             count             0</td>
+<td>调用接口方法。</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>方法返回指令</strong></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>指令码</strong></td>
+<td><strong>操作码（助记符）</strong></td>
+<td><strong>操作数</strong></td>
+<td><strong>描述（栈指操作数栈）</strong></td>
+</tr>
+<tr>
+<td>0xac</td>
+<td>ireturn</td>
+<td></td>
+<td>返回int类型值。</td>
+</tr>
+<tr>
+<td>0xad</td>
+<td>lreturn</td>
+<td></td>
+<td>返回long类型值。</td>
+</tr>
+<tr>
+<td>0xae</td>
+<td>freturn</td>
+<td></td>
+<td>返回float类型值。</td>
+</tr>
+<tr>
+<td>0xaf</td>
+<td>dreturn</td>
+<td></td>
+<td>返回double类型值。</td>
+</tr>
+<tr>
+<td>0xb0</td>
+<td>areturn</td>
+<td></td>
+<td>返回引用类型值。</td>
+</tr>
+<tr>
+<td>0xb1</td>
+<td>return</td>
+<td></td>
+<td>void函数返回。</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>线程同步指令</strong></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>指令码</strong></td>
+<td><strong>操作码（助记符）</strong></td>
+<td><strong>操作数</strong></td>
+<td><strong>描述（栈指操作数栈）</strong></td>
+</tr>
+<tr>
+<td>0xc2</td>
+<td>monitorenter</td>
+<td></td>
+<td>进入并获得对象监视器。</td>
+</tr>
+<tr>
+<td>0xc3</td>
+<td>monitorexit</td>
+<td></td>
+<td>释放并退出对象监视器。</td>
+</tr>
+</tbody></table>
+
+        </div>
+        
+<blockquote class="copyright">
+    <p><strong>本文链接 : </strong><a class="permalink" href="https://gxstax.github.io/2019/04/03/java%E6%8C%87%E4%BB%A4%E7%A0%81-%E5%AD%97%E8%8A%82%E7%A0%81-%E5%AF%B9%E5%88%AB/">https://gxstax.github.io/2019/04/03/java指令码-字节码-对别/</a></p>
+    <p><strong>This article is available under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener noreferrer">Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)</a> License</strong></p>
+</blockquote>
+
+
+    </article>
+    
+    <section id="comments">
+        
+    </section>
+
+
+    
+
+</main>
+
+
+<aside style="" id="sidebar" class="aside aside-fixture">
+    <div class="toc-sidebar">
+        <nav id="toc" class="article-toc">
+            <h3 class="toc-title">文章目录</h3>
+            <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#java-%E3%80%90%E6%8C%87%E4%BB%A4%E7%A0%81%E3%80%91%E3%80%90%E5%AD%90%E8%8A%82%E7%A0%81%E3%80%91-%E5%AF%B9%E6%AF%94"><span class="toc-number">1.</span> <span class="toc-text">java 【指令码】【子节码】 对比</span></a></li></ol>
+        </nav>
+    </div>
+</aside>
+
+
+
+
+
+        </section>
+        <footer class="hidden lg:block fixed bottom-0 left-0 sm:w-1/12 lg:w-1/6 bg-gray-100 z-40">
+    
+    <div class="footer-social-links">
+        
+            <a target="_blank" rel="noopener" href="https://github.com/gxstax">
+                <i class="iconfont icon-github"></i>
+            </a>
+        
+            <a target="_blank" rel="noopener" href="https://t.me/gxstax">
+                <i class="iconfont icon-telegram"></i>
+            </a>
+        
+            <a target="_blank" rel="noopener" href="https://twitter.com/Ant78261681">
+                <i class="iconfont icon-twitter"></i>
+            </a>
+        
+            <a target="_blank" rel="noopener" href="https://rss.com/podcasts/ant/">
+                <i class="iconfont icon-rss"></i>
+            </a>
+        
+    </div>
+    
+    
+</footer>
+
+        <div id="mask" class="hidden mask fixed inset-0 bg-gray-900 opacity-75 z-40"></div>
+        <div id="search-view-container" class="hidden shadow-xl"></div>
+        
+<script src="/js/dom-event.min.js"></script>
+
+
+
+<script src="/js/local-search.min.js"></script>
+
+
+
+    <script src="//cdn.jsdelivr.net/npm/lightgallery.js@1.1.3/dist/js/lightgallery.min.js"></script>
+    
+<script src="/js/light-gallery.min.js"></script>
+
+
+
+
+
+
+    </body>
+</html>
