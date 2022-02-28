@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html  lang="zh-CN" >
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, maximum-scale=5, viewport-fit=cover">
+    <title>解决k8s相关组件安装镜像无法拉取 | 马以的博客</title>
+    <meta name="description" content="k8s 集群搭建过程相关组件安装  在k8s 集群搭建过程中，我们在安装rook存储组件 以及ingress相关组件时，因为要访问https:&#x2F;&#x2F;k8s.gcr.io 去拉取镜像，而在墙内我们时访问不了这个组件的；  所以，我们采用的办法是，从阿里云把相应的镜像版本拉取到本地，然后打tag为官方镜像名称，这样，在拉取镜像的时候就直接从本地拉取，而不用访问https:&#x2F;&#x2F;k8s.gcr.io 去拉取">
+<meta property="og:type" content="article">
+<meta property="og:title" content="解决k8s相关组件安装镜像无法拉取">
+<meta property="og:url" content="https://gxstax.github.io/2022/02/18/%E8%A7%A3%E5%86%B3k8s%E7%9B%B8%E5%85%B3%E7%BB%84%E4%BB%B6%E5%AE%89%E8%A3%85%E9%95%9C%E5%83%8F%E6%97%A0%E6%B3%95%E6%8B%89%E5%8F%96/index.html">
+<meta property="og:site_name" content="马以的博客">
+<meta property="og:description" content="k8s 集群搭建过程相关组件安装  在k8s 集群搭建过程中，我们在安装rook存储组件 以及ingress相关组件时，因为要访问https:&#x2F;&#x2F;k8s.gcr.io 去拉取镜像，而在墙内我们时访问不了这个组件的；  所以，我们采用的办法是，从阿里云把相应的镜像版本拉取到本地，然后打tag为官方镜像名称，这样，在拉取镜像的时候就直接从本地拉取，而不用访问https:&#x2F;&#x2F;k8s.gcr.io 去拉取">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-02-18T15:30:26.000Z">
+<meta property="article:modified_time" content="2022-02-28T02:54:16.831Z">
+<meta property="article:author" content="马以">
+<meta property="article:tag" content="k8s">
+<meta name="twitter:card" content="summary">
+
+    
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
+
+    
+<link rel="stylesheet" href="/css/common.min.css">
+
+
+
+    
+    
+    
+    
+        <link href="//cdn.jsdelivr.net/npm/lightgallery.js@1.1.3/dist/css/lightgallery.min.css" rel="stylesheet">
+    
+    
+    
+<link rel="stylesheet" href="/css/iconfont.min.css">
+
+    
+<meta name="generator" content="Hexo 5.4.1"></head>
+
+    <body>
+        <header class="header header-fixture">
+    <div class="profile-search-wrap flex sm:block">
+        
+        
+        <div class="profile sm:text-center md:px-1 lg:px-3 sm:pb-4 sm:pt-6">
+            <a id="avatar" role="link" href="https://github.com/gxstax" class="inline-block lg:w-16 lg:h-16 w-8 h-8 m-2" target="_blank" rel="noopener" rel="noreferrer" >
+                <img src="https://www.gravatar.com/avatar/c41cd3c9e162f67fe7333c672cffeafd?s=128" class="rounded-full" alt="avatar">
+            </a>
+            <h2 id="name" class="hidden lg:block">Ant</h2>
+            <h3 id="title" class="hidden xl:block">笔耕不辍，钟情翰墨</h3>
+            
+            <small id="location" class="hidden lg:block">
+                <i class="iconfont icon-map-icon"></i>
+                ShenZhen, GuangDong
+            </small>
+            
+        </div>
+        
+        
+<div class="search flex-1 flex lg:inline-block sm:hidden lg:px-4 lg:mt-2 lg:mb-4 lg:w-full">
+    <form id="search-form" class="my-auto flex-1 lg:border lg:border-solid lg:border-gray-200">
+        <div class="input-group table bg-gray-100 lg:bg-white w-full">
+            <input id="search-input" type="text" placeholder="搜索" class="inline-block w-full bg-gray-100 lg:bg-white">
+            <span class="table-cell">
+                <button name="search tigger button" disabled>
+                    <i class="iconfont icon-search m-2"></i>
+                </button>
+            </span>
+        </div>
+    </form>
+        
+<div id="content-json" data-placeholder="搜索" class="invisible hidden">/content.json</div>
+<script id="search-teamplate" type="text/html" data-path="/content.json">
+    <div>
+        <div class="search-header bg-gray-400">
+            <input id="actual-search-input" model="keyword" ref="input" class="inline-block w-full h-10 px-2 py-1" placeholder="搜索" type="text">
+        </div>
+        <div class="search-result bg-gray-200">
+            {{#each searchPosts}}
+            <a href="/{{ path }}" class="result-item block px-2 pb-3 mb-1 pt-1 hover:bg-indigo-100">
+                <i class="iconfont icon-file"></i>
+                <h1 class="result-title inline font-medium text-lg">{{ title }}</h1>
+                <p class="result-content text-gray-600 text-sm">{{{ text }}}</p>
+            </a>
+            {{/each}}
+        </div>
+    </div>
+</script>
+
+</div>
+
+
+        <button name="menu toogle button" id="menu-toggle-btn" class="block sm:hidden p-3" role="button" aria-expanded="false">
+            <i class="iconfont icon-hamburger"></i>
+        </button>
+    </div>
+    <nav id="menu-nav" class="hidden sm:flex flex-col">
+        
+        
+            <div class="menu-item menu-home" role="menuitem">
+                <a href="/.">
+                    <i class="iconfont icon-home" aria-hidden="true"></i>
+                    <span class="menu-title">首页</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-archives" role="menuitem">
+                <a href="/archives">
+                    <i class="iconfont icon-archive" aria-hidden="true"></i>
+                    <span class="menu-title">归档</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-categories" role="menuitem">
+                <a href="/categories">
+                    <i class="iconfont icon-folder" aria-hidden="true"></i>
+                    <span class="menu-title">分类</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-tags" role="menuitem">
+                <a href="/tags">
+                    <i class="iconfont icon-tag" aria-hidden="true"></i>
+                    <span class="menu-title">标签</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-repository" role="menuitem">
+                <a href="/repository">
+                    <i class="iconfont icon-project" aria-hidden="true"></i>
+                    <span class="menu-title">项目</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-links" role="menuitem">
+                <a href="/links">
+                    <i class="iconfont icon-friend" aria-hidden="true"></i>
+                    <span class="menu-title">友链</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-about" role="menuitem">
+                <a href="/about">
+                    <i class="iconfont icon-cup" aria-hidden="true"></i>
+                    <span class="menu-title">关于</span>
+                </a>
+            </div>
+        
+        
+<div class="social-links flex sm:flex-col lg:hidden mt-5">
+    
+        <span class="social-item text-center">
+            <a target="_blank" rel="noopener" href="https://github.com/gxstax">
+                <i class="iconfont social-icon icon-github"></i>
+                <span class="menu-title hidden lg:inline">menu.github</span>
+            </a>
+        </span>
+    
+        <span class="social-item text-center">
+            <a target="_blank" rel="noopener" href="https://t.me/gxstax">
+                <i class="iconfont social-icon icon-telegram"></i>
+                <span class="menu-title hidden lg:inline">menu.telegram</span>
+            </a>
+        </span>
+    
+        <span class="social-item text-center">
+            <a target="_blank" rel="noopener" href="https://twitter.com/Ant78261681">
+                <i class="iconfont social-icon icon-twitter"></i>
+                <span class="menu-title hidden lg:inline">menu.twitter</span>
+            </a>
+        </span>
+    
+        <span class="social-item text-center">
+            <a target="_blank" rel="noopener" href="https://rss.com/podcasts/ant/">
+                <i class="iconfont social-icon icon-rss"></i>
+                <span class="menu-title hidden lg:inline">menu.rss</span>
+            </a>
+        </span>
+    
+</div>
+
+
+    </nav>
+</header>
+
+        <section class="main-section">
+            
+    <main class="flex-1 px-4 py-14 md:px-5 lg:px-8 lg:py-4 relative min-h-screen">
+    
+
+    <article class="content article article-archives article-type-list" itemscope="">
+        <header class="article-header">
+            
+    
+        <h1 class="article-title text-lg" itemprop="name">
+            解决k8s相关组件安装镜像无法拉取
+        </h1>
+    
+
+
+
+            <p class="article-meta mb-3 text-xs">
+                <span class="article-date">
+    <i class="iconfont icon-calendar-check"></i>
+	<a href="/2022/02/18/%E8%A7%A3%E5%86%B3k8s%E7%9B%B8%E5%85%B3%E7%BB%84%E4%BB%B6%E5%AE%89%E8%A3%85%E9%95%9C%E5%83%8F%E6%97%A0%E6%B3%95%E6%8B%89%E5%8F%96/" class="article-date">
+	  <time datetime="2022-02-18T15:30:26.000Z" itemprop="datePublished">2月 18</time>
+	</a>
+</span>
+
+                
+    <span class="article-category">
+    <i class="iconfont icon-folder"></i>
+    <a class="article-category-link" href="/categories/%E4%BA%91%E5%8E%9F%E7%94%9F/">云原生</a> , <a class="article-category-link" href="/categories/%E4%BA%91%E5%8E%9F%E7%94%9F/k8s/">k8s</a>
+  </span>
+
+
+                
+    <span class="article-tags">
+    <i class="iconfont icon-tag"></i>
+    <a class="article-tag-none-link" href="/tags/k8s/" rel="tag">k8s</a>
+  </span>
+
+
+                <span class="_partial/post-comment"><i class="icon icon-comment"></i>
+                    <a href="/2022/02/18/%E8%A7%A3%E5%86%B3k8s%E7%9B%B8%E5%85%B3%E7%BB%84%E4%BB%B6%E5%AE%89%E8%A3%85%E9%95%9C%E5%83%8F%E6%97%A0%E6%B3%95%E6%8B%89%E5%8F%96/#comments" class="article-comment-link">
+                        评论
+                    </a>
+                </span>
+                
+    
+        <span class="post-wordcount" itemprop="wordCount">字数统计: 509(字)</span>
+    
+    
+        <span class="post-readcount" itemprop="timeRequired">阅读时长: 2(分)</span>
+    
+
+
+            </p>
+        </header>
+        <div class="marked-body article-body">
+            <h3 id="k8s-集群搭建过程相关组件安装"><a href="#k8s-集群搭建过程相关组件安装" class="headerlink" title="k8s 集群搭建过程相关组件安装"></a>k8s 集群搭建过程相关组件安装</h3><blockquote>
+<p> 在k8s 集群搭建过程中，我们在安装rook存储组件 以及ingress相关组件时，因为要访问<a target="_blank" rel="noopener" href="https://k8s.gcr.io/">https://k8s.gcr.io</a> 去拉取镜像，而在墙内我们时访问不了这个组件的；</p>
+</blockquote>
+<p>所以，我们采用的办法是，从阿里云把相应的镜像版本拉取到本地，然后打tag为官方镜像名称，这样，在拉取镜像的时候就直接从本地拉取，而不用访问<a target="_blank" rel="noopener" href="https://k8s.gcr.io/">https://k8s.gcr.io</a> 去拉取了；</p>
+<ul>
+<li><p>rook 镜像</p>
+<p>注意这里的版本要和具体报错的拉取镜像失败的版本一致，相关日志请用命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ kubectl describe pod <span class="variable">$&#123;pod_name&#125;</span> -n rook-ceph</span><br></pre></td></tr></table></figure>
+
+<p>查看；</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">$ docker pull registry.aliyuncs.com/google_containers/csi-node-driver-registrar:v2.5.0</span><br><span class="line">$ docker tag registry.aliyuncs.com/google_containers/csi-node-driver-registrar:v2.5.0 k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.5.0</span><br><span class="line">$ docker rmi registry.aliyuncs.com/google_containers/csi-node-driver-registrar:v2.5.0</span><br><span class="line"></span><br><span class="line">$ docker pull registry.aliyuncs.com/google_containers/csi-provisioner:v3.1.0</span><br><span class="line">$ docker tag registry.aliyuncs.com/google_containers/csi-provisioner:v3.1.0 k8s.gcr.io/sig-storage/csi-provisioner:v3.1.0</span><br><span class="line">$ docker rmi registry.aliyuncs.com/google_containers/csi-provisioner:v3.1.0</span><br><span class="line"></span><br><span class="line">$ docker pull registry.aliyuncs.com/google_containers/csi-resizer:v1.4.0</span><br><span class="line">$ docker tag registry.aliyuncs.com/google_containers/csi-resizer:v1.4.0 k8s.gcr.io/sig-storage/csi-resizer:v1.4.0</span><br><span class="line">$ docker rmi registry.aliyuncs.com/google_containers/csi-resizer:v1.4.0</span><br><span class="line"></span><br><span class="line">$ docker pull registry.aliyuncs.com/google_containers/csi-attacher:v3.4.0</span><br><span class="line">$ docker tag registry.aliyuncs.com/google_containers/csi-attacher:v3.4.0 k8s.gcr.io/sig-storage/csi-attacher:v3.4.0</span><br><span class="line">$ docker rmi registry.aliyuncs.com/google_containers/csi-attacher:v3.4.0</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">$ docker pull registry.aliyuncs.com/google_containers/csi-snapshotter:v5.0.1</span><br><span class="line">$ docker tag registry.aliyuncs.com/google_containers/csi-snapshotter:v5.0.1 k8s.gcr.io/sig-storage/csi-snapshotter:v5.0.1</span><br><span class="line">$ docker rmi registry.aliyuncs.com/google_containers/csi-snapshotter:v5.0.1</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+<li><p>Ingress 镜像（版本获取同rook）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ docker pull registry.aliyuncs.com/google_containers/nginx-ingress-controller:v1.0.0</span><br><span class="line">$ docker tag registry.aliyuncs.com/google_containers/nginx-ingress-controller:v1.0.0 k8s.gcr.io/ingress-nginx/controller:v1.0.0</span><br><span class="line">$ docker rmi registry.aliyuncs.com/google_containers/nginx-ingress-controller:v1.0.0</span><br><span class="line"></span><br><span class="line">$ docker pull registry.aliyuncs.com/google_containers/kube-webhook-certgen:v1.0</span><br><span class="line">$ docker tag registry.aliyuncs.com/google_containers/kube-webhook-certgen:v1.0 k8s.gcr.io/ingress-nginx/kube-webhook-certgen:v1.0</span><br><span class="line">$ docker rmi registry.aliyuncs.com/google_containers/kube-webhook-certgen:v1.0</span><br></pre></td></tr></table></figure></li>
+</ul>
+
+        </div>
+        
+<blockquote class="copyright">
+    <p><strong>本文链接 : </strong><a class="permalink" href="https://gxstax.github.io/2022/02/18/%E8%A7%A3%E5%86%B3k8s%E7%9B%B8%E5%85%B3%E7%BB%84%E4%BB%B6%E5%AE%89%E8%A3%85%E9%95%9C%E5%83%8F%E6%97%A0%E6%B3%95%E6%8B%89%E5%8F%96/">https://gxstax.github.io/2022/02/18/解决k8s相关组件安装镜像无法拉取/</a></p>
+    <p><strong>This article is available under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener noreferrer">Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)</a> License</strong></p>
+</blockquote>
+
+
+    </article>
+    
+    <section id="comments">
+        
+    </section>
+
+
+    
+
+</main>
+
+
+<aside style="" id="sidebar" class="aside aside-fixture">
+    <div class="toc-sidebar">
+        <nav id="toc" class="article-toc">
+            <h3 class="toc-title">文章目录</h3>
+            <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#k8s-%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA%E8%BF%87%E7%A8%8B%E7%9B%B8%E5%85%B3%E7%BB%84%E4%BB%B6%E5%AE%89%E8%A3%85"><span class="toc-number">1.</span> <span class="toc-text">k8s 集群搭建过程相关组件安装</span></a></li></ol>
+        </nav>
+    </div>
+</aside>
+
+
+
+
+
+        </section>
+        <footer class="hidden lg:block fixed bottom-0 left-0 sm:w-1/12 lg:w-1/6 bg-gray-100 z-40">
+    
+    <div class="footer-social-links">
+        
+            <a target="_blank" rel="noopener" href="https://github.com/gxstax">
+                <i class="iconfont icon-github"></i>
+            </a>
+        
+            <a target="_blank" rel="noopener" href="https://t.me/gxstax">
+                <i class="iconfont icon-telegram"></i>
+            </a>
+        
+            <a target="_blank" rel="noopener" href="https://twitter.com/Ant78261681">
+                <i class="iconfont icon-twitter"></i>
+            </a>
+        
+            <a target="_blank" rel="noopener" href="https://rss.com/podcasts/ant/">
+                <i class="iconfont icon-rss"></i>
+            </a>
+        
+    </div>
+    
+    
+</footer>
+
+        <div id="mask" class="hidden mask fixed inset-0 bg-gray-900 opacity-75 z-40"></div>
+        <div id="search-view-container" class="hidden shadow-xl"></div>
+        
+<script src="/js/dom-event.min.js"></script>
+
+
+
+<script src="/js/local-search.min.js"></script>
+
+
+
+    <script src="//cdn.jsdelivr.net/npm/lightgallery.js@1.1.3/dist/js/lightgallery.min.js"></script>
+    
+<script src="/js/light-gallery.min.js"></script>
+
+
+
+
+
+
+    </body>
+</html>
