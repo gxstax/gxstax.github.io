@@ -22,7 +22,7 @@ menu_icons:
   about: icon-cup
 
 site:
-  favicon: /images/favicon.ico
+  favicon: /images/favicon.png
   #manifest:
   site_verification:
 #    google:
@@ -37,8 +37,8 @@ pagination:
     alwayShow: true
 
 comment:
-  type: # gitalk  # 启用哪种评论系统
-  disqus:  # enter disqus shortname here
+  type: gitalk  # 启用哪种评论系统
+  disqus: Ant  # enter disqus shortname here
   livere:
     uid: # enter youyan uid
   gitalk: # gitalk. https://gitalk.github.io/
@@ -77,8 +77,8 @@ footer:
 
 profile:
   enabled: true # Whether to show profile bar
-#  avatar: images/avatar.jpg
-  gravatar: gxstaxant@gmail.com # Gravatar email address, if you enable Gravatar, your avatar config will be overriden
+  avatar: /images/avatar.jpg
+  #gravatar: gxstaxant@gmail.com # Gravatar email address, if you enable Gravatar, your avatar config will be overriden
   author: Ant
   author_title: 笔耕不辍，钟情翰墨
   author_description: 要么庸俗、要么孤独
