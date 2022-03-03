@@ -61,3 +61,19 @@ tags: [k8s]
   ```
 
   
+  
++ fluentd-elasticsearch
+
+  ```bash
+  $ docker pull registry.aliyuncs.com/google_containers/fluentd-elasticsearch:1.20
+  $ docker tag registry.aliyuncs.com/google_containers/fluentd-elasticsearch:1.20 k8s.gcr.io/fluentd-elasticsearch:1.20
+  $ docker rmi registry.aliyuncs.com/google_containers/fluentd-elasticsearch:1.20
+  ```
+
+  
+
+  
+
++ <font color=red>注意 :</font> <font color=orange>上面的命令在每个节点都要执行（比如我的环境 k8s-master、k8s-node1、k8s-node2）</font>
+
+  
