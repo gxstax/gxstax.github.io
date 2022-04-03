@@ -65,9 +65,15 @@ tags: [k8s]
 + fluentd-elasticsearch
 
   ```bash
+  # 1.20 版本
   $ docker pull registry.aliyuncs.com/google_containers/fluentd-elasticsearch:1.20
   $ docker tag registry.aliyuncs.com/google_containers/fluentd-elasticsearch:1.20 k8s.gcr.io/fluentd-elasticsearch:1.20
   $ docker rmi registry.aliyuncs.com/google_containers/fluentd-elasticsearch:1.20
+  
+  # 2.2.0版本
+  $ docker pull registry.aliyuncs.com/google_containers/fluentd-elasticsearch:v2.2.0
+  $ docker tag registry.aliyuncs.com/google_containers/fluentd-elasticsearch:v2.2.0 k8s.gcr.io/fluentd-elasticsearch:v2.2.0
+  $ docker rmi registry.aliyuncs.com/google_containers/fluentd-elasticsearch:v2.2.0
   ```
 
   
